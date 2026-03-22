@@ -1,0 +1,4 @@
+{
+    "Command": "--version",
+    "Description": "show version information"
+}

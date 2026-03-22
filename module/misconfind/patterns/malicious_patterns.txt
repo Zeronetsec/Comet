@@ -1,0 +1,36 @@
+# Comet Project
+
+exec
+exec.Command
+sh -c
+bash -c
+system(
+popen(
+chmod 777
+os.Chmod
+chown
+setuid
+curl http
+wget http
+http.Get
+net/http
+password =
+passwd =
+api_key
+apikey
+secret
+token
+os.Remove
+os.RemoveAll
+rm -rf
+fmt.Scan
+bufio.NewReader
+os.Args
+eval(
+exec(
+Function(
+base64
+hex.Decode
+DecodeString
+
+# Copyright (c) 2026 Zeronetsec

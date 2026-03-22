@@ -1,0 +1,5 @@
+{
+    "Command": "--portscan",
+    "Args": "<host> [<start_port>:<end_port>]",
+    "Description": "discover open tcp ports and analyze reachability"
+}

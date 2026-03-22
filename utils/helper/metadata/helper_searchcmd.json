@@ -1,0 +1,5 @@
+{
+    "Command": "--searchcmd",
+    "Args": "<keyword>",
+    "Description": "search for a command by keyword"
+}

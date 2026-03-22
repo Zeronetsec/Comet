@@ -1,0 +1,45 @@
+// Comet Framework
+
+package uwu
+
+import (
+    "fmt"
+    "time"
+    "comet/utils/cursor"
+)
+
+func Nyan(duration time.Duration) {
+    faces := []string{
+        "(｡◕‿◕｡)",
+        "(≧◡≦)",
+        "ʕ•ᴥ•ʔ",
+        "(・ω・)",
+        "(๑˃ᴗ˂)ﻭ",
+        "(ง'̀-'́)ง",
+        "(=^･ω･^=)",
+    }
+
+    delay := 200 * time.Millisecond
+    end := time.After(duration)
+    nyaa := 0
+
+    cursor.Hide()
+    for {
+        select {
+            case <-end:
+                fmt.Print("\r\033[K")
+                return
+            default:
+                fmt.Printf(
+                    "\r%s\033[K",
+                    faces[nyaa%len(faces)],
+                )
+
+            time.Sleep(delay)
+            nyaa++
+        }
+    }
+    cursor.Visible()
+}
+
+// Copyright (c) 2026 Zeronetsec
