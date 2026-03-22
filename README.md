@@ -32,7 +32,7 @@ It also includes a minimal set of built-in self-audit features.
 This project is provided for educational and authorized security research purposes only. <br>
 The author is not responsible for any misuse or damage caused by this tool. <br>
 Please read the
-[DISCLAIMER](https://github.com/Zeronetsec/Comet/blob/main/DISCLAIMER)
+[DISCLAIMER](https://github.com/Zeronetsec/Comet/blob/main/DISCLAIMER.md)
 file for full terms.
 
 ## Testing
