@@ -66,12 +66,6 @@ cd Comet
 chmod +x install.sh
 ./install.sh
 ```
-or:
-```bash
-git clone https://github.com/Zeronetsec/Comet.git
-cd Comet
-go install .
-```
 
 ## Usage
 ```bash

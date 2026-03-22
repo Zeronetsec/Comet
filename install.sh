@@ -128,7 +128,7 @@ lmeta="$base/comet/utils/listcmd/metadata"
 smeta="$base/comet/utils/searchcmd/metadata"
 spinner \
   --command="command cp -f ${lmeta}/*.json ${smeta}/ && command rm -f ${smeta}/placeholder.txt" \
-  --message="Sync: ${GG}${lmeta}/*.json ${GG}=> ${GG}${smeta}/"
+  --message="Sync: ${GG}${lmeta}/*.json ${DG}=> ${GG}${smeta}/"
 
 cd "$base/comet"
 spinner \

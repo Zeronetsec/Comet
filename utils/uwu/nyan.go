@@ -5,7 +5,6 @@ package uwu
 import (
     "fmt"
     "time"
-    "comet/utils/cursor"
 )
 
 func Nyan(duration time.Duration) {
@@ -23,7 +22,6 @@ func Nyan(duration time.Duration) {
     end := time.After(duration)
     nyaa := 0
 
-    cursor.Hide()
     for {
         select {
             case <-end:
@@ -39,7 +37,6 @@ func Nyan(duration time.Duration) {
             nyaa++
         }
     }
-    cursor.Visible()
 }
 
 // Copyright (c) 2026 Zeronetsec
