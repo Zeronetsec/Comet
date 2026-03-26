@@ -44,7 +44,7 @@ function getinstall() {
 }
 
 printf '\n'
-echo -e "${N}Enter path to your ${GG}comet folder"
+echo -e "${N}Enter path to your ${GG}comet ${N}folder"
 read -p "$(echo -e "${N}Path: ")" path
 declare -A varmap=(
     ["~"]="$HOME"
