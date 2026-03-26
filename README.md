@@ -22,11 +22,12 @@ It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, 
 </details>
 
 ## Features
-- Massive username enumeration across 700+ domains.
-- High-performance directory fuzzing.
-- TCP port scanning.
-- HTML link crawling (hyperlink extraction).
-- Parameter discovery via Wayback Machine.
+- Massive username enumeration across 700+ domains
+- High-performance directory fuzzing
+- TCP port scanning
+- HTML link crawling (hyperlink extraction)
+- Parameter discovery via Wayback Machine
+- And more
 
 ## Disclaimer
 This project is provided for educational and authorized security research purposes only. <br>
