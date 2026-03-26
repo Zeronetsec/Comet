@@ -1,5 +1,0 @@
-{
-    "Command": "--checkroot",
-    "Args": "",
-    "Description": "check for root/superuser privileges and capabilities"
-}

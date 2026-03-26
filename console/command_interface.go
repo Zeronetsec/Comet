@@ -15,13 +15,7 @@ import (
     "comet/utils/version"
     "comet/utils/helper"
     "comet/utils/cursor"
-    "comet/module/sysinfo"
     "comet/module/portscan"
-    "comet/module/procinfo"
-    "comet/module/checkroot"
-    "comet/module/dumpstring"
-    "comet/module/decode"
-    "comet/module/misconfind"
     "comet/module/dirfuzzer"
     "comet/module/osint"
     "comet/module/paramscan"
@@ -33,13 +27,6 @@ var WordlistFS embed.FS
 
 type Command interface {
     Execute(args []string)
-}
-
-type Sysinfo struct{}
-func (c Sysinfo) Execute(args []string) {
-    cursor.Hide()
-    sysinfo.MachineInfo()
-    cursor.Visible()
 }
 
 type Portscan struct{}
@@ -74,56 +61,6 @@ func (c Portscan) Execute(args []string) {
 
     cursor.Hide()
     portscan.ScanPort(ip, start, end)
-    cursor.Visible()
-}
-
-type Procinfo struct{}
-func (c Procinfo) Execute(args []string) {
-    cursor.Hide()
-    procinfo.ShowProcInfo()
-    cursor.Visible()
-}
-
-type Checkroot struct{}
-func (c Checkroot) Execute(args []string) {
-    cursor.Hide()
-    checkroot.GetCheck()
-    cursor.Visible()
-}
-
-type Dumpstring struct{}
-func (c Dumpstring) Execute(args []string) {
-    if len(args) < 3 {
-        invinput.MissingArgs()
-        return
-    }
-
-    cursor.Hide()
-    dumpstring.Analyzer(args[2])
-    cursor.Visible()
-}
-
-type Decode struct{}
-func (c Decode) Execute(args []string) {
-    if len(args) < 3 {
-        invinput.MissingArgs()
-        return
-    }
-
-    cursor.Hide()
-    decode.ExecBrute(args[2])
-    cursor.Visible()
-}
-
-type Misconfind struct{}
-func (c Misconfind) Execute(args []string) {
-    if len(args) < 3 {
-        invinput.MissingArgs()
-        return
-    }
-
-    cursor.Hide()
-    misconfind.Finder(args[2:])
     cursor.Visible()
 }
 

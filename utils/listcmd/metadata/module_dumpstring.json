@@ -1,5 +1,0 @@
-{
-    "Command": "--dumpstring",
-    "Args": "<string>",
-    "Description": "analyze string metadata, encoding, hash, and entropy"
-}

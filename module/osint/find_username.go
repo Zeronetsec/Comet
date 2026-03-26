@@ -20,7 +20,7 @@ var SitesFS embed.FS
 
 var (
     osintList = "sites/osint_sites.txt"
-    maxThreads = 50
+    maxThreads = 100
     timeoutSec = 1 * time.Second
 )
 

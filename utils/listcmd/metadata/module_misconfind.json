@@ -1,5 +1,0 @@
-{
-    "Command": "--misconfind",
-    "Args": "<path>",
-    "Description": "find misconfigurations and risky patterns in a given path (case-insensitive matching to reduce false negatives)"
-}

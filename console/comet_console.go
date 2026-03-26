@@ -15,13 +15,7 @@ func CometConsole(input string) {
     }
 
     commands := map[string]Command{
-        "--sysinfo": Sysinfo{},
         "--portscan": Portscan{},
-        "--procinfo": Procinfo{},
-        "--checkroot": Checkroot{},
-        "--dumpstring": Dumpstring{},
-        "--decode": Decode{},
-        "--misconfind": Misconfind{},
         "--dirfuzzer": Dirfuzzer{},
         "--osint": Osint{},
         "--paramscan": Paramscan{},

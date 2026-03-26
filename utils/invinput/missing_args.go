@@ -9,13 +9,13 @@ import (
 
 func MissingArgs() {
     fmt.Printf(
-        "%s[!] %sInvalid input!\n",
+        "%s[!] %sMissing arguments!\n",
         color.R, color.N,
     )
 
     fmt.Printf(
-        "%s[!] %sMissing arguments!\n",
-        color.R, color.N,
+        "%s[!] %sTry: %scomet --help %sor %scomet --listcmd%s\n",
+        color.R, color.N, color.GG, color.N, color.GG, color.N,
     )
 }
 

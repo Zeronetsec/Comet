@@ -11,55 +11,40 @@ base="$PREFIX/opt"
 symlink="$PREFIX/bin"
 bkdate="$(command date +%Y_%b_%d_%H_%M_%S)"
 
-function spinner() {
-    local cmd=""
-    local msg="Running command"
-
-    for args in "$@"; do
-        case "$args" in
-            --command=*)
-                cmd="${args#*=}"
-                ;;
-            --message=*)
-                msg="${args#*=}"
-                ;;
-        esac
-    done
-
-    function spinner_anim() {
-        local pid=$1
-        local delay=0.1
-        local spinstr='|/-\'
-
-        while kill -0 "$pid" 2>/dev/null; do
-            local temp="${spinstr#?}"
-            printf " \033[0m[\033[0;32m%c\033[0m] " "$spinstr"
-            spinstr="$temp${spinstr%"$temp"}"
-            command sleep "$delay"
-            printf "\b\b\b\b\b"
-        done
-        printf "     \b\b\b\b\b"
-    }
-
-    echo -ne "${B}[*] ${N}${msg}${N}"
-    command bash -c "${cmd}" > /dev/null 2>&1 &
-    local pid=$!
-
-    spinner_anim "$pid"
-    wait "$pid"
+function install() {
+    local cmd="$1"
+    local desc="$2"
+    echo -e "\n${B}[*] ${N}${desc}"
+    eval "${cmd}" >/dev/null
     local status=$?
+    echo -e "    ${DG}└── ${N}exit: ${GG}${status}${N}"
+}
 
-    if [[ "$status" -eq 0 ]]; then
-        echo -ne " ${DG}- ${N}[${GG}✔ ${N}Success]\n"
+function getinstall() {
+    if command -v apt >/dev/null 2>&1; then
+        installw="command apt install -y"
+    elif command -v apk >/dev/null 2>&1; then
+        installw="command apk add"
+    elif command -v pacman >/dev/null 2>&1; then
+        installw="command pacman -S --noconfirm"
     else
-        echo -ne " ${DG}- ${N}[${R}✖ ${N}Failed (exit code: ${GG}${status}${N})]\n"
-        echo -ne "\033[?25h"
-        exit $status
+        exit 1
     fi
+
+    echo -e "$1" | while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        IFS="::" read -ra pkgs <<< "$line"
+        for pkg in "${pkgs[@]}"; do
+            pkg="$(echo -e "$pkg" | command xargs)"
+            if eval "$installw $pkg" 2>/dev/null; then
+                break
+            fi
+        done
+    done
 }
 
 printf '\n'
-echo -e "${B}[*] ${N}Enter path to your comet folder"
+echo -e "${N}Enter path to your ${GG}comet folder"
 read -p "$(echo -e "${N}Path: ")" path
 declare -A varmap=(
     ["~"]="$HOME"
@@ -86,59 +71,60 @@ pack=(
 )
 
 for i in "${pack[@]}"; do
-    spinner \
-        --command="command apt install \"${i}\" -y" \
-        --message="Installing: ${GG}${i}${N}"
+    install \
+        "getinstall ${i} -y" \
+        "Installing: ${GG}${i}${N}"
 done
 
 if [[ ! -d "$base" ]]; then
-    spinner \
-        --command="command mkdir -p \"${base}\"" \
-        --message="Create directory: ${GG}${base}${N}"
+    install \
+        "command mkdir -p ${base}" \
+        "Create directory: ${GG}${base}${N}"
 fi
 
 
 if [[ -d "$base/comet" ]]; then
     echo -ne "\033[?25h\n"
-    read -p "$(echo -e "${B}[*] ${N}Do you wan't to backup ${GG}${base}/comet${N}? (y/n) ")" chs
-    echo -ne "\033[?25l\n"
+    read -p "$(echo -e "${N}Do you wan't to backup ${GG}${base}/comet${N}? (y/n) ")" chs
+    echo -ne "\033[?25l"
 
     if [[ "$chs" == 'y' ]]; then
         cd "$base"
-        spinner \
-            --command="command zip -r \"comet_${bkdate}.bak.zip\" \"comet\"" \
-            --message="Backup: ${GG}${base}/comet ${DG}=> ${GG}${base}/comet_${bkdate}.bak.zip${N}"
+        install \
+            "command zip -r comet_${bkdate}.bak.zip comet" \
+            "Backup: ${GG}${base}/comet ${DG}=> ${GG}${base}/comet_${bkdate}.bak.zip${N}"
         cd
     fi
 
-    spinner \
-        --command="command rm -rf \"${base}/comet\"" \
-        --message="Removing: ${GG}old comet${N}"
+    install \
+        "command rm -rf ${base}/comet" \
+        "Removing: ${GG}old comet${N}"
 fi
 
-spinner \
-    --command="command mv \"${path}\" \"${base}/comet\"" \
-    --message="Moving: ${GG}${path} ${DG}=> ${GG}${base}/comet${N}"
-
-spinner \
-    --command="command chmod +x -R \"${base}/comet/\"" \
-    --message="Setting up permission"
+install \
+    "command mv ${path} ${base}/comet" \
+    "Moving: ${GG}${path} ${DG}=> ${GG}${base}/comet${N}"
 
 lmeta="$base/comet/utils/listcmd/metadata"
 smeta="$base/comet/utils/searchcmd/metadata"
-spinner \
-  --command="command cp -f ${lmeta}/*.json ${smeta}/ && command rm -f ${smeta}/placeholder.txt" \
-  --message="Sync: ${GG}${lmeta}/*.json ${DG}=> ${GG}${smeta}/"
+
+install \
+    "command cp -f ${lmeta}/*.json ${smeta}/ && command rm -f ${smeta}/placeholder.txt" \
+    "Sync: ${GG}${lmeta}/*.json ${DG}=> ${GG}${smeta}/"
 
 cd "$base/comet"
-spinner \
-    --command="command go build -o comet" \
-    --message="Building comet"
+install \
+    "command go mod tidy" \
+    "Retidy comet"
+
+install \
+    "command go build -o comet 2>/dev/null" \
+    "Building comet"
 cd
 
-spinner \
-    --command="command ln -sf \"${base}/comet/comet\" \"${symlink}/comet\"" \
-    --message="Symlink: ${GG}${base}/comet/comet ${DG}=> ${GG}${symlink}/comet${N}"
+install \
+    "command ln -sf ${base}/comet/comet ${symlink}/comet" \
+    "Symlink: ${GG}${base}/comet/comet ${DG}=> ${GG}${symlink}/comet${N}"
 
 printf '\n'
 if command -v comet &>/dev/null; then

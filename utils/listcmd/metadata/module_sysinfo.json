@@ -1,5 +1,0 @@
-{
-    "Command": "--sysinfo",
-    "Args": "",
-    "Description": "show hardware, kernel, and system environment information"
-}

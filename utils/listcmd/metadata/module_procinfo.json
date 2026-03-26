@@ -1,5 +1,0 @@
-{
-    "Command": "--procinfo",
-    "Args": "",
-    "Description": "display detailed process hierarchy, cpu, and memory usage"
-}

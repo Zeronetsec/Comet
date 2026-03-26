@@ -1,5 +1,0 @@
-{
-    "Command": "--decode",
-    "Args": "<string|file>",
-    "Description": "automatically detect and decode multiple encodings"
-}

@@ -6,8 +6,8 @@
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 # Comet Framework
-Comet is a lightweight security framework designed for reconnaissance. <br>
-It also includes a minimal set of built-in self-audit features.
+Comet is a security framework focused on reconnaissance, built for high performance. <br>
+It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, and more.
 
 ## Preview
 <details>
@@ -25,7 +25,7 @@ It also includes a minimal set of built-in self-audit features.
 - Massive username enumeration across 700+ domains.
 - High-performance directory fuzzing.
 - TCP port scanning.
-- HTML link crawling (href extraction).
+- HTML link crawling (hyperlink extraction).
 - Parameter discovery via Wayback Machine.
 
 ## Disclaimer
