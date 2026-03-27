@@ -85,7 +85,7 @@ fi
 
 if [[ -d "$base/comet" ]]; then
     echo -ne "\033[?25h\n"
-    read -p "$(echo -e "${N}Do you wan't to backup ${GG}${base}/comet${N}? (y/n) ")" chs
+    read -p "$(echo -e "${N}Do you want to backup ${GG}${base}/comet${N}? (y/n) ")" chs
     echo -ne "\033[?25l"
 
     if [[ "$chs" == 'y' ]]; then
@@ -115,11 +115,11 @@ install \
 cd "$base/comet"
 install \
     "command go mod tidy" \
-    "Retidy comet"
+    "Retidy: ${GG}comet${N}"
 
 install \
     "command go build -o comet 2>/dev/null" \
-    "Building comet"
+    "Building: ${GG}comet${N}"
 cd
 
 install \
@@ -128,12 +128,12 @@ install \
 
 printf '\n'
 if command -v comet &>/dev/null; then
-    echo -e "${GG}[+] ${N}comet installed!"
+    echo -e "${GG}[+] ${N}Comet installed!"
     echo -e "${GG}[+] ${N}Usage: ${GG}comet --help ${N}to show helper"
     echo -ne "\033[?25h\n"
     exit 0
 else
-    echo -e "${R}[!] ${N}Failed installing Comet!"
+    echo -e "${R}[!] ${N}Failed installing comet!"
     echo -ne "\033[?25l\n"
     exit 1
 fi
