@@ -10,6 +10,7 @@ import (
 const (
     tools = "Comet"
     version = "v1.0"
+    creator = "Zeronetsec"
     homepage = "https://github.com/Zeronetsec/Comet"
 )
 
@@ -22,6 +23,11 @@ func CometVersion() {
     fmt.Printf(
         "%sVersion: %s%s%s\n",
         color.N, color.GG, version, color.N,
+    )
+
+    fmt.Printf(
+        "%sCreator: %s%s%s\n",
+        color.N, color.GG, creator, color.N,
     )
 
     fmt.Printf(

@@ -9,6 +9,7 @@ import (
     "io/fs"
     "comet/utils/color"
     "comet/utils/asciipicker"
+    "comet/utils/birthday"
 )
 
 //go:embed metadata/*
@@ -16,6 +17,7 @@ var MetadataFS embed.FS
 
 func CometHelper() {
     asciipicker.RandomBanner()
+    birthday.CometBirthDay()
 
     fmt.Printf(
         "%sUsage: %scomet %s<command> [<args>]%s\n",
