@@ -11,6 +11,16 @@ base="$PREFIX/opt"
 symlink="$PREFIX/bin"
 bkdate="$(command date +%Y_%b_%d_%H_%M_%S)"
 
+path="$(
+    cd -- "$(
+        command dirname -- "${BASH_SOURCE[0]}"
+    )" &> /dev/null && pwd
+)"
+
+if [[ "$1" == "--backup" ]]; then
+    backup="true"
+fi
+
 function install() {
     local cmd="$1"
     local desc="$2"
@@ -43,26 +53,11 @@ function getinstall() {
     done
 }
 
-printf '\n'
-echo -e "${N}Enter path to your ${GG}comet ${N}folder"
-read -p "$(echo -e "${N}Path: ")" path
-declare -A varmap=(
-    ["~"]="$HOME"
-    ["\$HOME"]="$HOME"
-    ["\$PREFIX"]="$PREFIX"
-    ["\$PWD"]="$PWD"
-)
-
-for exp in "${!varmap[@]}"; do
-    path="${path/#$exp/${varmap[$exp]}}"
-done
-
 if [[ ! -d "$path" ]]; then
     echo -e "\n${R}[!] ${N}Folder: ${GG}${path} ${N}not found! \n"
     exit 1
 fi
 
-echo -ne "\033[?25l"
 echo -e "\n${B}[*] ${N}Installing: ${GG}Comet${N}"
 
 pack=(
@@ -83,19 +78,15 @@ if [[ ! -d "$base" ]]; then
 fi
 
 
+if [[ "$backup" == "true" && -d "$base/comet" ]]; then
+    cd "$base"
+    install \
+        "command zip -r comet_${bkdate}.bak.zip comet" \
+        "Backup: ${GG}${base}/comet ${DG}=> ${GG}${base}/comet_${bkdate}.bak.zip${N}"
+    cd
+fi
+
 if [[ -d "$base/comet" ]]; then
-    echo -ne "\033[?25h\n"
-    read -p "$(echo -e "${N}Do you want to backup ${GG}${base}/comet${N}? (y/n) ")" chs
-    echo -ne "\033[?25l"
-
-    if [[ "$chs" == 'y' ]]; then
-        cd "$base"
-        install \
-            "command zip -r comet_${bkdate}.bak.zip comet" \
-            "Backup: ${GG}${base}/comet ${DG}=> ${GG}${base}/comet_${bkdate}.bak.zip${N}"
-        cd
-    fi
-
     install \
         "command rm -rf ${base}/comet" \
         "Removing: ${GG}old comet${N}"
@@ -130,11 +121,11 @@ printf '\n'
 if command -v comet &>/dev/null; then
     echo -e "${GG}[+] ${N}Comet installed!"
     echo -e "${GG}[+] ${N}Usage: ${GG}comet --help ${N}to show helper"
-    echo -ne "\033[?25h\n"
+    printf '\n'
     exit 0
 else
     echo -e "${R}[!] ${N}Failed installing comet!"
-    echo -ne "\033[?25l\n"
+    printf '\n'
     exit 1
 fi
 

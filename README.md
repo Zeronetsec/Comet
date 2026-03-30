@@ -66,6 +66,9 @@ git clone https://github.com/Zeronetsec/Comet.git
 cd Comet
 chmod +x install.sh
 ./install.sh
+
+# for backup
+./install.sh --backup
 ```
 
 ## Usage
