@@ -109,7 +109,7 @@ install \
     "Retidy: ${GG}comet${N}"
 
 install \
-    "command go build -o comet 2>/dev/null" \
+    "command go build -v -o comet" \
     "Building: ${GG}comet${N}"
 cd
 
