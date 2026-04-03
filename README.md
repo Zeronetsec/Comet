@@ -36,30 +36,6 @@ Please read the
 [DISCLAIMER](https://github.com/Zeronetsec/Comet/blob/main/DISCLAIMER.md)
 file for full terms.
 
-## Testing
-<table>
-	<tr>
-		<th>OS</th>
-		<th>Version</th>
-	</tr>
-	<tr>
-		<td>Debian</td>
-		<td>Trixie</td>
-	</tr>
-    <tr>
-        <td>Ubuntu</td>
-        <td>25.10</td>
-    </tr>
-	<tr>
-		<td>Kali</td>
-		<td>Rolling</td>
-	</tr>
-	<tr>
-		<td>Termux</td>
-		<td>0.118.3</td>
-	</tr>
-</table>
-
 ## Installation
 ```bash
 git clone https://github.com/Zeronetsec/Comet.git
@@ -73,12 +49,12 @@ chmod +x install.sh
 
 ## Usage
 ```bash
-comet --portscan <ip>
+comet --dirfuzzer <url> [--wordlist <wordlist>|--threads <threads>|--timeout <timeout>|--recursive]
+comet --paramscan <url> [--threads <threads>|--timeout <timeout>|--fuzz]
+comet --portscan <ip> [<start_port>:<end_port>]
 comet --osint <username>
 comet --searchcmd <keyword>
 comet --listcmd
-comet --help
-comet --version
 ```
 And more commands.
 
