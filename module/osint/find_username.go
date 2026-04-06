@@ -13,6 +13,7 @@ import (
     "net"
     "net/http"
     "comet/utils/color"
+    "comet/utils/logger"
 )
 
 //go:embed sites/*
@@ -124,6 +125,7 @@ func FindUsername(username string) {
         color.B, color.N, color.GG, found, color.N,
     )
 
+    log := logger.NewLogger("osint")
     statusOrder := []int{200, 301, 302}
     for _, status := range statusOrder {
         urls, ok := results[status]
@@ -132,7 +134,6 @@ func FindUsername(username string) {
         }
 
         sort.Strings(urls)
-
         fmt.Printf(
             "    %s* %s%d:%s\n",
             color.DG, color.WW, status, color.N,
@@ -148,6 +149,12 @@ func FindUsername(username string) {
                 "        %s%s %s%s%s\n",
                 color.DG, uprefix, color.GG, u, color.N,
             )
+
+            logMess := fmt.Sprintf(
+                "Found: %s:%d", u, status,
+            )
+
+            log.Log(":", logMess)
         }
     }
 }

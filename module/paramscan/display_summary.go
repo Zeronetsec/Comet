@@ -6,6 +6,7 @@ import (
     "fmt"
     "sort"
     "comet/utils/color"
+    "comet/utils/logger"
 )
 
 func displaySummary(results map[int][]string) {
@@ -27,6 +28,7 @@ func displaySummary(results map[int][]string) {
         color.B, color.N, color.GG, totalFound, color.N,
     )
 
+    log := logger.NewLogger("paramscan")
     statuses := []int{200, 301, 302}
     for _, status := range statuses {
         urls, ok := results[status]
@@ -50,6 +52,12 @@ func displaySummary(results map[int][]string) {
                 "        %s%s %s%s%s\n",
                 color.DG, prefix, color.GG, u, color.N,
             )
+
+            logMess := fmt.Sprintf(
+                "Found: %s:%d", u, status,
+            )
+
+            log.Log(":", logMess)
         }
     }
 }

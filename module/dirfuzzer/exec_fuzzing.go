@@ -12,6 +12,7 @@ import (
     "io/fs"
     "net/http"
     "comet/utils/color"
+    "comet/utils/logger"
 )
 
 func ExecFuzzing(target string, fsys fs.FS, wordlist string, timeout int, recursive bool, threads int) {
@@ -157,6 +158,7 @@ func ExecFuzzing(target string, fsys fs.FS, wordlist string, timeout int, recurs
         color.B, color.N, color.GG, totalFound, color.N,
     )
 
+    log := logger.NewLogger("dirfuzzer")
     statuses := []int{200, 301, 302}
     for _, status := range statuses {
         urls, ok := results[status]
@@ -165,7 +167,6 @@ func ExecFuzzing(target string, fsys fs.FS, wordlist string, timeout int, recurs
         }
 
         sort.Strings(urls)
-
         fmt.Printf(
             "    %s* %s%d:%s\n",
             color.DG, color.WW, status, color.N,
@@ -181,6 +182,12 @@ func ExecFuzzing(target string, fsys fs.FS, wordlist string, timeout int, recurs
                 "        %s%s %s%s%s\n",
                 color.DG, uprefix, color.GG, u, color.N,
             )
+
+            logMess := fmt.Sprintf(
+                "Found: %s:%d", u, status,
+            )
+
+            log.Log(":", logMess)
         }
     }
 }
