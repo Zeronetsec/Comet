@@ -4,23 +4,10 @@
 [![gover](https://img.shields.io/badge/Go-Version%201.26.1-blue.svg)]()
 [![os](https://img.shields.io/badge/Supported%20OS-Linux-blue.svg)]()
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![views](https://img.shields.io/endpoint?url=https%3A%2F%2Fhits.dwyl.com%2FZeronetsec%2FComet.json&&label=Views&color=blue)](https://github.com/Zeronetsec/Comet)
 
 # Comet Framework
 Comet is a security framework focused on reconnaissance, built for high performance. <br>
 It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, and more.
-
-## Preview
-<details>
-<summary>Show Preview</summary>
-<br>
-<img src=".preview/preview_1.png" width="500">
-<br><br>
-<img src=".preview/preview_2.png" width="500">
-<br><br>
-<img src=".preview/preview_3.png" width="500">
-<br>
-</details>
 
 ## Features
 - Massive username enumeration across 700+ domains
