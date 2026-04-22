@@ -19,6 +19,6 @@ This tool is distributed **as is**, without any warranties or guarantees of any 
 - Non-infringement  
 
 Users are solely responsible for their actions and any consequences that may result from using this tool. <br>
-If you do not agree with these terms, you must not use this software.
+If you do not agree with these terms, you must not use this software. <br>
 
 <!-- Copyright (c) 2026 Zeronetsec -->

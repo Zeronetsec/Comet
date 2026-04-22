@@ -18,11 +18,12 @@ It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, 
 - And more
 
 ## Disclaimer
-This project is provided for educational and authorized security research purposes only. <br>
-The author is not responsible for any misuse or damage caused by this tool. <br>
 Please read the
 [DISCLAIMER](https://github.com/Zeronetsec/Comet/blob/main/DISCLAIMER.md)
-file for full terms.
+before use. <br>
+Use at your own risk. <br>
+This project is provided for educational and authorized security research purposes only. <br>
+The author is not responsible for any misuse or damage caused by this tool.
 
 ## Installation
 ```bash
