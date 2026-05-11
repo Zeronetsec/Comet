@@ -1,6 +1,6 @@
 <!-- Comet Framework -->
 
-# Disclaimer
+# DISCLAIMER
 This software is provided for educational and authorized security research purposes only. <br>
 By using this tool, you agree that you will use it **only on systems, networks, and targets that you own or have explicit permission to test.** <br>
 Unauthorized scanning, enumeration, or exploitation of systems is illegal and strictly prohibited.
