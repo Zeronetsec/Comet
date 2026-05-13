@@ -1,4 +1,4 @@
-<!-- Comet Framework -->
+<!-- https://github.com/Zeronetsec/Comet -->
 
 [![version](https://img.shields.io/badge/Comet-Version%201.0-blue.svg?maxAge=259200)]()
 [![gover](https://img.shields.io/badge/Go-Version%201.26.1-blue.svg)]()
@@ -46,6 +46,12 @@ comet --searchcmd <keyword>
 comet --listcmd
 ```
 And more commands.
+
+## Credits
+This project incorporates components from third-party sources. <br>
+Please refer to
+[CREDITS](https://github.com/Zeronetsec/Comet/blob/main/CREDITS.md)
+for full details and licensing information.
 
 ## License
 This project is licensed under the MIT License. <br>
