@@ -7,9 +7,15 @@ B='\033[1;34m'
 GG='\033[0;32m'
 DG='\033[1;90m'
 
-base="$PREFIX/opt"
-symlink="$PREFIX/bin"
-bkdate="$(command date +%Y_%b_%d_%H_%M_%S)"
+if [[ -z "${PREFIX}" ]]; then
+    prefix="/usr"
+else
+    prefix="${PREFIX}"
+fi
+
+base="${prefix}/opt"
+symlink="${prefix}/bin"
+bkdate="$(command date '+%Y_%b_%d_%H_%M_%S')"
 
 path="$(
     cd -- "$(
@@ -17,13 +23,13 @@ path="$(
     )" &> /dev/null && pwd
 )"
 
-if [[ "$1" == "--backup" ]]; then
+if [[ "${1}" == "--backup" ]]; then
     backup="true"
 fi
 
 function install() {
-    local cmd="$1"
-    local desc="$2"
+    local cmd="${1}"
+    local desc="${2}"
     echo -e "\n${B}[*] ${N}${desc}"
     eval "${cmd}" >/dev/null
     local status=$?
@@ -41,24 +47,24 @@ function getinstall() {
         exit 1
     fi
 
-    echo -e "$1" | while IFS= read -r line; do
-        [[ -z "$line" ]] && continue
-        IFS="::" read -ra pkgs <<< "$line"
+    echo -e "${1}" | while IFS= read -r line; do
+        [[ -z "${line}" ]] && continue
+        IFS="::" read -ra pkgs <<< "${line}"
         for pkg in "${pkgs[@]}"; do
-            pkg="$(echo -e "$pkg" | command xargs)"
-            if eval "$installw $pkg" 2>/dev/null; then
+            pkg="$(echo -e "${pkg}" | command xargs)"
+            if eval "${installw} ${pkg}" 2>/dev/null; then
                 break
             fi
         done
     done
 }
 
-if [[ ! -d "$path" ]]; then
-    echo -e "\n${R}[!] ${N}Folder: ${GG}${path} ${N}not found! \n"
+if [[ ! -d "${path}" ]]; then
+    echo -e "${R}[!] ${N}Folder: ${GG}${path} ${N}not found! \n"
     exit 1
 fi
 
-echo -e "\n${B}[*] ${N}Installing: ${GG}Comet${N}"
+echo -e "${B}[*] ${N}Installing: ${GG}Comet${N}"
 
 pack=(
     "golang"
@@ -67,26 +73,26 @@ pack=(
 
 for i in "${pack[@]}"; do
     install \
-        "getinstall ${i} -y" \
+        "getinstall ${i}" \
         "Installing: ${GG}${i}${N}"
 done
 
-if [[ ! -d "$base" ]]; then
+if [[ ! -d "${base}" ]]; then
     install \
         "command mkdir -p ${base}" \
         "Create directory: ${GG}${base}${N}"
 fi
 
 
-if [[ "$backup" == "true" && -d "$base/comet" ]]; then
-    cd "$base"
+if [[ "${backup}" == "true" && -d "${base}/comet" ]]; then
+    cd "${base}"
     install \
         "command zip -r comet_${bkdate}.bak.zip comet" \
         "Backup: ${GG}${base}/comet ${DG}=> ${GG}${base}/comet_${bkdate}.bak.zip${N}"
     cd
 fi
 
-if [[ -d "$base/comet" ]]; then
+if [[ -d "${base}/comet" ]]; then
     install \
         "command rm -rf ${base}/comet" \
         "Removing: ${GG}old comet${N}"
@@ -96,14 +102,14 @@ install \
     "command mv ${path} ${base}/comet" \
     "Moving: ${GG}${path} ${DG}=> ${GG}${base}/comet${N}"
 
-lmeta="$base/comet/utils/listcmd/metadata"
-smeta="$base/comet/utils/searchcmd/metadata"
+lmeta="${base}/comet/utils/listcmd/metadata"
+smeta="${base}/comet/utils/searchcmd/metadata"
 
 install \
     "command cp -f ${lmeta}/*.json ${smeta}/ && command rm -f ${smeta}/placeholder.txt" \
     "Sync: ${GG}${lmeta}/*.json ${DG}=> ${GG}${smeta}/"
 
-cd "$base/comet"
+cd "${base}/comet"
 install \
     "command go mod tidy" \
     "Retidy: ${GG}comet${N}"
@@ -121,11 +127,9 @@ printf '\n'
 if command -v comet &>/dev/null; then
     echo -e "${GG}[+] ${N}Comet installed!"
     echo -e "${GG}[+] ${N}Usage: ${GG}comet --help ${N}to show helper"
-    printf '\n'
     exit 0
 else
     echo -e "${R}[!] ${N}Failed installing comet!"
-    printf '\n'
     exit 1
 fi
 

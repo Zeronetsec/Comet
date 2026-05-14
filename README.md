@@ -1,6 +1,6 @@
 <!-- https://github.com/Zeronetsec/Comet -->
 
-[![version](https://img.shields.io/badge/Comet-Version%201.0-blue.svg?maxAge=259200)]()
+[![version](https://img.shields.io/badge/Comet-Version%200.1-blue.svg?maxAge=259200)]()
 [![gover](https://img.shields.io/badge/Go-Version%201.26.1-blue.svg)]()
 [![os](https://img.shields.io/badge/Supported%20OS-Linux-blue.svg)]()
 [![license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)

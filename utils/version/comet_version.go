@@ -9,7 +9,7 @@ import (
 
 const (
     tools = "Comet"
-    version = "v1.0"
+    version = "v0.1"
     creator = "Zeronetsec"
     homepage = "https://github.com/Zeronetsec/Comet"
 )
