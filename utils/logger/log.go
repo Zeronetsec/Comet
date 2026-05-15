@@ -9,20 +9,12 @@ import (
     "path/filepath"
 )
 
-type Logger struct {
-    FileName string
-}
-
-func NewLogger(fileName string) *Logger {
-    return &Logger{FileName: fileName}
-}
-
 func (l *Logger) Log(tag string, message string) error {
     home, err := os.UserHomeDir()
     if err != nil {
         return fmt.Errorf(
-            "Failed get $HOME: %w",
-            err,
+            "Failed get $HOME: %s%w%s",
+            color.GG, err, color.N,
         )
     }
 
