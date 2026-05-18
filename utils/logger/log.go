@@ -7,6 +7,7 @@ import (
     "os"
     "time"
     "path/filepath"
+    "comet/utils/color"
 )
 
 func (l *Logger) Log(tag string, message string) error {
