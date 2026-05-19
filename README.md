@@ -14,7 +14,7 @@ It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, 
 - TCP port scanning
 - HTML link crawling (hyperlink extraction)
 - Parameter discovery via Wayback Machine
-- And more
+- And more.
 
 ## Disclaimer
 This project is provided for educational and authorized security research purposes only. <br>
@@ -29,10 +29,12 @@ Use at your own risk.
 git clone https://github.com/Zeronetsec/Comet.git
 cd Comet
 chmod +x install.sh
-./install.sh
 
-# for backup
-./install.sh --backup
+# termux / linux (root)
+./install.sh # --backup
+
+# linux (user)
+sudo ./install.sh # --backup
 ```
 
 ## Usage
@@ -53,6 +55,6 @@ Please refer to
 for full details and licensing information.
 
 ## License
-This project is licensed under the MIT License. <br>
+This project is licensed under the MIT License.
 
 <!-- Copyright (c) 2026 Zeronetsec -->

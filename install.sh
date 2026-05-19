@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Comet Framework
+# https://github.com/Zeronetsec/Comet
 
 N='\033[0m'
 R='\033[1;31m'
