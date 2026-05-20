@@ -8,7 +8,7 @@ import (
 )
 
 const (
-    tools = "Comet"
+    name = "Comet"
     version = "v0.1"
     creator = "Zeronetsec"
     homepage = "https://github.com/Zeronetsec/Comet"
@@ -16,8 +16,8 @@ const (
 
 func CometVersion() {
     fmt.Printf(
-        "%sProject: %s%s%s\n",
-        color.N, color.GG, tools, color.N,
+        "%sName: %s%s%s\n",
+        color.N, color.GG, name, color.N,
     )
 
     fmt.Printf(
