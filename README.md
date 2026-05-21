@@ -20,13 +20,13 @@ It covers a wide range of recon techniques, including fuzzing, OSINT, crawling, 
 This project is provided for educational and authorized security research purposes only. <br>
 The author is not responsible for any misuse or damage caused by this tool. <br>
 Please read the
-[DISCLAIMER](https://github.com/Zeronetsec/Comet/blob/main/DISCLAIMER.md)
+[DISCLAIMER](DISCLAIMER.md)
 before use. <br>
 Use at your own risk.
 
 ## Installation
 ```bash
-git clone https://github.com/Zeronetsec/Comet.git
+git clone https://github.com/Zeronetsec/Comet
 cd Comet
 chmod +x install.sh
 
@@ -51,7 +51,7 @@ And more commands.
 ## Credits
 This project incorporates components from third-party sources. <br>
 Please refer to
-[CREDITS](https://github.com/Zeronetsec/Comet/blob/main/CREDITS.md)
+[CREDITS](CREDITS.md)
 for full details and licensing information.
 
 ## License
