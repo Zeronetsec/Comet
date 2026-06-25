@@ -1,0 +1,5 @@
+{
+    "Command": "--paramscan",
+    "Args": "<url> [--threads <value>] [--timeout <value>] [--fuzz]",
+    "Description": "discover hidden web parameters and entry points"
+}

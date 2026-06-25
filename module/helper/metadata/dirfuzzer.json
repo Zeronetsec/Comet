@@ -1,0 +1,5 @@
+{
+    "Command": "--dirfuzzer",
+    "Args": "<url> [--wordlist <file>] [--threads <value>] [--timeout <value>] [--recursive]",
+    "Description": "fuzz directories and endpoints to discover hidden paths"
+}

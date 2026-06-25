@@ -6,16 +6,17 @@ import (
     "fmt"
     "strings"
     "strconv"
-    "comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 func ParseRange(input string) (int, int, error) {
     parts := strings.Split(input, ":")
-
     if len(parts) != 2 {
         fmt.Printf(
             "%s[!] %sInvalid format %s(%suse: %sstart%s:%send%s)%s\n",
-            color.R, color.N, color.DG, color.N, color.GG, color.DG, color.GG, color.DG, color.N,
+            color.R, color.N,
+            color.DG, color.N,
+            color.GG, color.DG, color.GG, color.DG, color.N,
         )
 
         return 0, 0, fmt.Errorf("Invalid format")
@@ -38,10 +39,8 @@ func ParseRange(input string) (int, int, error) {
             "%s[!] %sInvalid range %s(%s1-65535%s)%s\n",
             color.R, color.N, color.DG, color.GG, color.DG, color.N,
         )
-
         return 0, 0, fmt.Errorf("Invalid range")
     }
-
     return start, end, nil
 }
 

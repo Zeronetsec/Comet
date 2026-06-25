@@ -3,11 +3,31 @@
 package tracelink
 
 import (
-    "fmt"
     "sync"
+    "fmt"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
-func Tracer(target string, threads int, recursive bool) {
+func Tracer(
+    target string,
+    threads int,
+    recursive bool,
+) {
+    fmt.Printf(
+        "%s[*] %sTarget: %s%s%s\n",
+        color.B, color.N, color.GG, target, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sThreads: %s%d%s\n",
+        color.B, color.N, color.GG, threads, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sRecursive: %s%t%s\n",
+        color.B, color.N, color.GG, recursive, color.N,
+    )
+
     results := make(map[string][]string)
     seen := make(map[string]struct{})
 
@@ -16,7 +36,6 @@ func Tracer(target string, threads int, recursive bool) {
     var crawl func(string)
 
     sem := make(chan struct{}, threads)
-
     crawl = func(u string) {
         defer wg.Done()
         links := fetchLinks(u)
@@ -56,8 +75,7 @@ func Tracer(target string, threads int, recursive bool) {
     }()
 
     wg.Wait()
-    fmt.Println()
-    printSummary(results)
+    summary(results)
 }
 
 // Copyright (c) 2026 Zeronetsec

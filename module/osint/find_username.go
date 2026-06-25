@@ -3,29 +3,28 @@
 package osint
 
 import (
-    "embed"
-    "time"
     "bufio"
+    "embed"
+    "fmt"
+    "net"
     "strings"
     "sync"
-    "fmt"
-    "sort"
-    "net"
+    "time"
     "net/http"
-    "comet/utils/color"
-    "comet/utils/logger"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 //go:embed sites/*
 var SitesFS embed.FS
-
 var (
     osintList = "sites/osint_sites.txt"
-    maxThreads = 100
-    timeoutSec = 1 * time.Second
 )
 
-func FindUsername(username string) {
+func FindUsername(
+    username string,
+    maxThreads int,
+    timeoutSec time.Duration,
+) {
     file, err := SitesFS.Open(osintList)
     if err != nil {
         fmt.Printf(
@@ -48,8 +47,19 @@ func FindUsername(username string) {
 
     total := len(domains)
     fmt.Printf(
-        "%s[*] %sScanning username: %s%s %son %s%d %sdomains\n",
-        color.B, color.N, color.GG, username, color.N, color.GG, total, color.N,
+        "%s[*] %sTarget: %s%s %son %s%d %sdomains\n",
+        color.B, color.N, color.GG, username, color.N,
+        color.GG, total, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sThreads: %s%d%s\n",
+        color.B, color.N, color.GG, maxThreads, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sTimeout: %s%s%s\n",
+        color.B, color.N, color.GG, timeoutSec, color.N,
     )
     fmt.Println()
 
@@ -79,7 +89,10 @@ func FindUsername(username string) {
 
         go func(d string) {
             defer wg.Done()
-            url, status, ok := checkDomain(client, username, d)
+            url, status, ok := checkDomain(
+                client, username, d,
+            )
+
             if !ok {
                 <-sem
                 return
@@ -87,7 +100,10 @@ func FindUsername(username string) {
 
             mu.Lock()
             found++
-            results[status] = append(results[status], url)
+            results[status] = append(
+                results[status], url,
+            )
+
             current := found
             mu.Unlock()
 
@@ -102,7 +118,7 @@ func FindUsername(username string) {
 
             fmt.Printf(
                 "%s[+] %sFound %d: %s%s %s(%s%d%s)%s\n",
-                color.B, color.N, current, color.GG, url,
+                color.GG, color.N, current, color.GG, url,
                 color.DG, col, status, color.DG, color.N,
             )
             <-sem
@@ -110,53 +126,7 @@ func FindUsername(username string) {
     }
 
     wg.Wait()
-    fmt.Println()
-
-    if found == 0 {
-        fmt.Printf(
-            "%s[!] %sNo username found!\n",
-            color.R, color.N,
-        )
-        return
-    }
-
-    fmt.Printf(
-        "%s[*] %sTotal %s%d %sfound:\n",
-        color.B, color.N, color.GG, found, color.N,
-    )
-
-    log := logger.NewLogger("osint")
-    statusOrder := []int{200, 301, 302}
-    for _, status := range statusOrder {
-        urls, ok := results[status]
-        if !ok || len(urls) == 0 {
-            continue
-        }
-
-        sort.Strings(urls)
-        fmt.Printf(
-            "    %s* %s%d:%s\n",
-            color.DG, color.WW, status, color.N,
-        )
-
-        for i, u := range urls {
-            uprefix := "├──"
-            if i == len(urls)-1 {
-                uprefix = "└──"
-            }
-
-            fmt.Printf(
-                "        %s%s %s%s%s\n",
-                color.DG, uprefix, color.GG, u, color.N,
-            )
-
-            logMess := fmt.Sprintf(
-                "Found: %s:%d", u, status,
-            )
-
-            log.Log(":", logMess)
-        }
-    }
+    summary(results)
 }
 
 // Copyright (c) 2026 Zeronetsec

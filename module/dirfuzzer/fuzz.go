@@ -7,7 +7,7 @@ import (
     "strings"
     "sync"
     "net/http"
-    "comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 func fuzz(

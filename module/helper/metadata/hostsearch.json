@@ -1,0 +1,5 @@
+{
+    "Command": "--hostsearch",
+    "Args": "<host>",
+    "Description": "discover virtual hosts and related domains sharing the same host"
+}

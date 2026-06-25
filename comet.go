@@ -5,7 +5,7 @@ package main
 import (
     "os"
     "strings"
-    "comet/console"
+    "github.com/Zeronetsec/Comet/console"
 )
 
 func main() {

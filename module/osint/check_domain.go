@@ -3,8 +3,10 @@
 package osint
 
 import (
+    "fmt"
     "strings"
     "net/http"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 func checkDomain(
@@ -19,8 +21,16 @@ func checkDomain(
     variants := generateVariants(base)
 
     for _, url := range variants {
+        fmt.Printf(
+            "%s[*] %sChecking: %s%s%s\n",
+            color.B, color.N, color.GG, url, color.N,
+        )
+
         req, _ := http.NewRequest("GET", url, nil)
-        req.Header.Set("User-Agent", "https://github.com/Zeronetsec/Comet")
+        req.Header.Set(
+            "User-Agent",
+            "https://github.com/Zeronetsec/Comet",
+        )
 
         resp, err := client.Do(req)
         if err != nil {
@@ -30,7 +40,10 @@ func checkDomain(
         status := resp.StatusCode
         resp.Body.Close()
 
-        if status == 200 || status == 301 || status == 302 || status == 403 {
+        if (status == 200 ||
+            status == 301 ||
+            status == 302 ||
+            status == 403) {
             return url, status, true
         }
     }

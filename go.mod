@@ -1,5 +1,5 @@
-module comet
+module github.com/Zeronetsec/Comet
 
 go 1.26.3
 
-require golang.org/x/net v0.52.0
+require golang.org/x/net v0.56.0

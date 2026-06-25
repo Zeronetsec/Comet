@@ -5,7 +5,7 @@ package birthday
 import (
     "fmt"
     "time"
-    "comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 func CometBirthDay() {
@@ -13,7 +13,7 @@ func CometBirthDay() {
     now := time.Now().Format("01-02")
     if now == birthDate {
         fmt.Printf(
-            "%s› %sHappy birthday for %scomet framework %s🎉\n",
+            "%s› %sHappy birthday for %scomet %s🎉\n",
             color.R, color.N, color.GG, color.N,
         )
         fmt.Println()

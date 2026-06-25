@@ -9,7 +9,9 @@ import (
 
 func normalizeURL(base, href string) string {
     href = strings.TrimSpace(href)
-    if href == "" || strings.HasPrefix(href, "javascript:") || strings.HasPrefix(href, "mailto:") {
+    if (href == "" ||
+        strings.HasPrefix(href, "javascript:") ||
+        strings.HasPrefix(href, "mailto:")) {
         return ""
     }
 

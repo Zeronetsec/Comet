@@ -1,0 +1,71 @@
+// https://github.com/Zeronetsec/Comet
+
+package helper
+
+import (
+    "embed"
+    "fmt"
+    "encoding/json"
+    "io/fs"
+    "github.com/Zeronetsec/Comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/banner"
+    "github.com/Zeronetsec/Comet/utils/birthday"
+)
+
+//go:embed metadata/*
+var MetadataFS embed.FS
+
+func CometHelper() {
+    banner.Show()
+    birthday.CometBirthDay()
+
+    fmt.Printf(
+        "%sUsage: %scomet %s<option> [<args>]%s\n",
+        color.N, color.GG, color.CC, color.N,
+    )
+
+    fmt.Println()
+    fmt.Printf(
+        "%sAvailable options:\n",
+        color.N,
+    )
+
+    files, err := fs.Glob(MetadataFS, "metadata/*.json")
+    if err != nil {
+        fmt.Printf(
+            "%s[!] %sError reading config: %s%s%s\n",
+            color.R, color.N, color.GG, err, color.N,
+        )
+        return
+    }
+
+    for _, file := range files {
+        data, err := MetadataFS.ReadFile(file)
+        if err != nil {
+            continue 
+        }
+
+        var ch Helper
+        err = json.Unmarshal(data, &ch)
+        if err != nil {
+            continue
+        }
+
+        args := ""
+        if ch.Args != "" {
+            args = " " + ch.Args
+        }
+
+        fmt.Printf(
+            "    %s* %s%s%s%s%s\n",
+            color.DG, color.GG, ch.Command, color.CC, args, color.N,
+        )
+
+        fmt.Printf(
+            "    %s└── %s%s%s\n",
+            color.DG, color.WW, ch.Description, color.N,
+        )
+    }
+}
+
+// Copyright (c) 2026 Zeronetsec

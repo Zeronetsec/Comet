@@ -1,0 +1,5 @@
+{
+    "Command": "--header",
+    "Args": "<url> [--timeout <value>] [--redirect <true|false>]",
+    "Description": "fetch and analyze http response headers for security insights"
+}

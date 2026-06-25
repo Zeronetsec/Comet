@@ -6,13 +6,14 @@ import (
     "fmt"
     "net"
     "time"
-    "comet/utils/color"
-    "comet/utils/logger"
+    "github.com/Zeronetsec/Comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/logger"
 )
 
 func scanRun(ip string, port int) bool {
     log := logger.NewLogger("portscan")
     address := fmt.Sprintf("%s:%d", ip, port)
+
     conn, err := net.DialTimeout(
         "tcp", address, 200*time.Millisecond,
     )
@@ -20,7 +21,6 @@ func scanRun(ip string, port int) bool {
     if err != nil {
         return false
     }
-
     defer conn.Close()
 
     fmt.Printf(
@@ -29,10 +29,11 @@ func scanRun(ip string, port int) bool {
     )
 
     logMess := fmt.Sprintf(
-        "Port: %s:%d open", ip, port,
+        "Port: %s:%d open",
+        ip, port,
     )
-
     log.Log(":", logMess)
+
     return true
 }
 

@@ -4,14 +4,14 @@ package console
 
 import (
     "os"
-    "comet/utils/invinput"
+    "github.com/Zeronetsec/Comet/utils/invinput"
 )
 
 func CometConsole(input string) {
     args := os.Args
     if len(args) < 2 {
-        invinput.Invalid()
-        return
+        invinput.MissingArgument()
+        os.Exit(1)
     }
 
     commands := map[string]Command{
@@ -20,17 +20,20 @@ func CometConsole(input string) {
         "--osint": Osint{},
         "--paramscan": Paramscan{},
         "--tracelink": Tracelink{},
-        "--listcmd": Listcmd{},
-        "--searchcmd": Searchcmd{},
         "--uwu": Uwu{},
         "--version": Version{},
         "--help": Helper{},
+        "--header": Header{},
+        "--subdomain": Subdomain{},
+        "--hostsearch": HostSearch{},
+        "--dnslookup": DNSLookup{},
     }
 
     if cmd, ok := commands[args[1]]; ok {
         cmd.Execute(args)
     } else {
-        invinput.Unknown(args[1])
+        invinput.InvalidOption(args[1])
+        os.Exit(1)
     }
 }
 

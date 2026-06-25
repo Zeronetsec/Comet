@@ -5,7 +5,7 @@ package portscan
 import (
     "fmt"
     "sync"
-    "comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/color"
 )
 
 func ScanPort(ip string, start, end int) {
@@ -18,9 +18,20 @@ func ScanPort(ip string, start, end int) {
     }
 
     fmt.Printf(
-        "%s[*] %sScanning port on %s%s %s(%s%d-%d%s)%s\n",
-        color.B, color.N, color.GG, ip, color.DG, color.CC, start, end, color.DG, color.N,
+        "%s[*] %sTarget: %s%s%s\n",
+        color.B, color.N, color.GG, ip, color.N,
     )
+
+    fmt.Printf(
+        "%s[*] %sStart port: %s%d%s\n",
+        color.B, color.N, color.GG, start, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sEnd port: %s%d%s\n",
+        color.B, color.N, color.GG, end, color.N,
+    )
+    fmt.Println()
 
     var wg sync.WaitGroup
     sem := make(chan struct{}, 200)
@@ -28,7 +39,6 @@ func ScanPort(ip string, start, end int) {
     var openPorts int
     var mu sync.Mutex
 
-    fmt.Println()
     for port := start; port <= end; port++ {
         wg.Add(1)
         sem <- struct{}{}
@@ -54,8 +64,9 @@ func ScanPort(ip string, start, end int) {
             color.B, color.N, color.GG, ip, color.N,
         )
     } else {
+        fmt.Println()
         fmt.Printf(
-            "\n%s[*] %sScanning complete %s(%s%d %sport open%s)%s\n",
+            "%s[*] %sScanning complete %s(%s%d %sport open%s)%s\n",
             color.B, color.N, color.DG, color.GG, openPorts, color.WW, color.DG, color.N,
         )
     }

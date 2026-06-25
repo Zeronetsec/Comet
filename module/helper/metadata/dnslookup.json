@@ -1,0 +1,5 @@
+{
+    "Command": "--dnslookup",
+    "Args": "<host>",
+    "Description": "perform dns lookup to retrieve domain records and ip mapping"
+}

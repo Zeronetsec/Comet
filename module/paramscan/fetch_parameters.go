@@ -12,10 +12,15 @@ import (
     "net"
     "net/http"
     "net/url"
-    "comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/color"
+    "github.com/Zeronetsec/Comet/utils/logger"
 )
 
-func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
+func FetchParameters(
+    target string,
+    threads, timeout int,
+    isFuzzing bool,
+) {
     u, _ := url.Parse(target)
     domain := u.Host
     if domain == "" {
@@ -23,9 +28,20 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
     }
 
     fmt.Printf(
-        "%s[*] %sFetching archived urls for: %s%s%s\n",
+        "%s[*] %sTarget: %s%s%s\n",
         color.B, color.N, color.GG, domain, color.N,
     )
+
+    fmt.Printf(
+        "%s[*] %sAPI: %sweb.archive.org%s\n",
+        color.B, color.N, color.GG, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sFuzz: %s%t%s\n",
+        color.B, color.N, color.GG, isFuzzing, color.N,
+    )
+    fmt.Println()
 
     apiURL := fmt.Sprintf(
         "http://web.archive.org/cdx/search/cdx?url=%s/*&output=txt&fl=original&collapse=urlkey",
@@ -38,7 +54,7 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
             MaxIdleConns: 100,
             MaxIdleConnsPerHost: 100,
             DialContext: (&net.Dialer{
-                Timeout: 10 * time.Second,
+                Timeout: 15 * time.Second,
                 KeepAlive: 30 * time.Second,
             }).DialContext,
             TLSHandshakeTimeout: 10 * time.Second,
@@ -52,7 +68,10 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
 
     for i := 0; i < maxApiRetries; i++ {
         req, _ := http.NewRequest("GET", apiURL, nil)
-        req.Header.Set("User-Agent", "https://github.com/Zeronetsec/Comet")
+        req.Header.Set(
+            "User-Agent",
+            "https://github.com/Zeronetsec/Comet",
+        )
 
         resp, err = client.Do(req)
         if err == nil && resp.StatusCode == 200 {
@@ -65,7 +84,9 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
 
         fmt.Printf(
             "%s[!] %sConnection unstable, retrying api %s(%s%d%s/%s%d%s)%s\n",
-            color.R, color.N, color.DG, color.GG, i+1, color.DG, color.CC, maxApiRetries, color.DG, color.N,
+            color.R, color.N,
+            color.DG, color.GG, i+1, color.DG,
+            color.CC, maxApiRetries, color.DG, color.N,
         )
 
         time.Sleep(time.Duration(i+2) * time.Second)
@@ -122,25 +143,32 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
                 "%s[*] %sFound: %s%s%s\n",
                 color.B, color.N, color.GG, p, color.N,
             )
+
+            log := logger.NewLogger("paramscan")
+            logMess := fmt.Sprintf(
+                "Found: %s", p,
+            )
+            log.Log(":", logMess)
         }
         return
     }
 
+    fmt.Println()
     fmt.Printf(
         "%s[*] %sstart parameter fuzzing %s(%s1-10s%s)%s\n",
         color.B, color.N, color.DG, color.CC, color.DG, color.N,
     )
 
-    fmt.Println()
     fmt.Printf(
-        "%sPatterns: %s%d%s\n",
-        color.N, color.GG, len(patterns), color.N,
+        "%s[*] %sPatterns: %s%d%s\n",
+        color.B, color.N, color.GG, len(patterns), color.N,
     )
 
     fmt.Printf(
-        "%sThreads: %s%d%s\n",
-        color.N, color.GG, threads, color.N,
+        "%s[*] %sThreads: %s%d%s\n",
+        color.B, color.N, color.GG, threads, color.N,
     )
+    fmt.Println()
 
     var wg sync.WaitGroup
     sem := make(chan struct{}, threads)
@@ -154,7 +182,7 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
             MaxIdleConns: threads,
             MaxIdleConnsPerHost: threads,
             DialContext: (&net.Dialer{
-                Timeout: 5 * time.Second,
+                Timeout: 10 * time.Second,
                 KeepAlive: 30 * time.Second,
             }).DialContext,
             ResponseHeaderTimeout: 10 * time.Second,
@@ -162,7 +190,7 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
     }
 
     for _, p := range patterns {
-        for val := 1; val <= 10; val++ {
+        for val := 1; val <= 5; val++ {
             wg.Add(1)
             sem <- struct{}{}
 
@@ -172,20 +200,43 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
                     <-sem
                 }()
 
-                testURL := strings.ReplaceAll(pattern, "FUZZ", fmt.Sprintf("%d", v))
+                testURL := strings.ReplaceAll(
+                    pattern, "FUZZ",
+                    fmt.Sprintf("%d", v),
+                )
+
+                mu.Lock()
+                fmt.Printf(
+                    "%s[*] %sFuzz: %s%s%s\n",
+                    color.B, color.N, color.GG, testURL, color.N,
+                )
+                mu.Unlock()
 
                 for retry := 0; retry < 3; retry++ {
                     req, _ := http.NewRequest("GET", testURL, nil)
-                    req.Header.Set("User-Agent", "https://github.com/Zeronetsec/Comet")
+                    req.Header.Set(
+                        "User-Agent",
+                        "https://github.com/Zeronetsec/Comet",
+                    )
 
                     res, err := fuzzClient.Do(req)
                     if err == nil {
-                        if res.StatusCode == 200 || res.StatusCode == 301 || res.StatusCode == 303 {
+                        if (res.StatusCode == 200 ||
+                            res.StatusCode == 301 ||
+                            res.StatusCode == 303) {
                             mu.Lock()
-                            results[res.StatusCode] = append(results[res.StatusCode], testURL)
+                            results[res.StatusCode] = append(
+                                results[res.StatusCode],
+                                testURL,
+                            )
+
+                            fmt.Printf(
+                                "%s[+] %sFound: %s%s %s(%s%d%s)%s\n",
+                                color.GG, color.N, color.GG, testURL,
+                                color.DG, color.CC, res.StatusCode, color.DG, color.N,
+                            )
                             mu.Unlock()
                         }
-
                         res.Body.Close()
                         break
                     }
@@ -196,8 +247,7 @@ func FetchParameters(target string, threads, timeout int, isFuzzing bool) {
     }
 
     wg.Wait()
-    fmt.Println()
-    displaySummary(results)
+    summary(results)
 }
 
 // Copyright (c) 2026 Zeronetsec

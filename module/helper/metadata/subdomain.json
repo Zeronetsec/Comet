@@ -1,0 +1,5 @@
+{
+    "Command": "--subdomain",
+    "Args": "<domain>",
+    "Description": "enumerate subdomains to expand the target's attack surface"
+}

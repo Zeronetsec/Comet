@@ -10,7 +10,9 @@ import (
     "io/fs"
 )
 
-func openWordlist(fsys fs.FS, path string) (*bufio.Scanner, func(), int, error) {
+func openWordlist(
+    fsys fs.FS, path string,
+) (*bufio.Scanner, func(), int, error) {
     var reader io.Reader
     var closer func() = func() {}
 
@@ -40,8 +42,13 @@ func openWordlist(fsys fs.FS, path string) (*bufio.Scanner, func(), int, error) 
     }
 
     total := len(lines)
-    newReader := strings.NewReader(strings.Join(lines, "\n"))
-    return bufio.NewScanner(newReader), closer, total, nil
+    newReader := strings.NewReader(
+        strings.Join(lines, "\n"),
+    )
+
+    return bufio.NewScanner(
+        newReader,
+    ), closer, total, nil
 }
 
 // Copyright (c) 2026 Zeronetsec

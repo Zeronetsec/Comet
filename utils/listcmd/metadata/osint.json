@@ -1,5 +1,0 @@
-{
-    "Command": "--osint",
-    "Args": "<username>",
-    "Description": "hunt username across 700+ social platforms"
-}
