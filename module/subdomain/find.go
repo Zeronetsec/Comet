@@ -35,7 +35,17 @@ func Find(domain string) {
     )
 
     client := &http.Client{
-        Timeout: 30 * time.Second,
+        Timeout: 60 * time.Second,
+        Transport: &http.Transport{
+            MaxIdleConns: 100,
+            MaxIdleConnsPerHost: 100,
+            DialContext: (&net.Dialer{
+                Timeout: 15 * time.Second,
+                KeepAlive: 30 * time.Second,
+            }).DialContext,
+            TLSHandshakeTimeout: 10 * time.Second,
+            ResponseHeaderTimeout: 15 * time.Second,
+        },
     }
 
     resp, err := client.Get(url)

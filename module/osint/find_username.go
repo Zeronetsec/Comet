@@ -47,9 +47,13 @@ func FindUsername(
 
     total := len(domains)
     fmt.Printf(
-        "%s[*] %sTarget: %s%s %son %s%d %sdomains\n",
+        "%s[*] %sTarget: %s%s%s\n",
         color.B, color.N, color.GG, username, color.N,
-        color.GG, total, color.N,
+    )
+
+    fmt.Printf(
+        "%s[*] %sTotal domains: %s%d%s\n",
+        color.B, color.N, color.GG, total, color.N,
     )
 
     fmt.Printf(

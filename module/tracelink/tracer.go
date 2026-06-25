@@ -27,6 +27,7 @@ func Tracer(
         "%s[*] %sRecursive: %s%t%s\n",
         color.B, color.N, color.GG, recursive, color.N,
     )
+    fmt.Println()
 
     results := make(map[string][]string)
     seen := make(map[string]struct{})
@@ -37,6 +38,11 @@ func Tracer(
 
     sem := make(chan struct{}, threads)
     crawl = func(u string) {
+        fmt.Printf(
+            "%s[*] %sCrawling: %s%s%s\n",
+            color.B, color.N, color.GG, u, color.N,
+        )
+
         defer wg.Done()
         links := fetchLinks(u)
 
@@ -49,11 +55,22 @@ func Tracer(
 
             seen[link] = struct{}{}
             results[u] = append(results[u], link)
+
+            fmt.Printf(
+                "%s[+] %sFound: %s%s %s-> %s%s%s\n",
+                color.GG, color.N, color.GG, u,
+                color.DG, color.CC, link, color.N,
+            )
             mu.Unlock()
 
             if recursive && isSameHost(target, link) {
                 wg.Add(1)
                 sem <- struct{}{}
+
+                fmt.Printf(
+                    "%s[*] %sRecursive: %s%s%s\n",
+                    color.B, color.N, color.GG, link, color.N,
+                )
 
                 go func(next string) {
                     defer func() {

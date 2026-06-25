@@ -19,7 +19,7 @@ func (c Paramscan) Execute(args []string) {
     }
 
     target := args[2]
-    timeout := 10
+    timeout := 15
     threads := 100
     fuzz := false
 

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-    name = "Comet"
+    name = "Comet Framework"
     version = "v0.1"
     creator = "Zeronetsec"
     homepage = "https://github.com/Zeronetsec/Comet"
