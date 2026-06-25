@@ -33,7 +33,7 @@ For more detailed installation and uninstallation instructions, see [.docs/insta
 ```bash
 comet --dirfuzzer http://192.168.1.1/
 comet --header http://192.168.1.1 --redirect true
-comet --tracelink http://google.com --recursive
+comet --tracelink https://google.com --recursive
 comet --dnslookup google.com
 comet --paramscan http://testphp.vulnweb.com
 ```
