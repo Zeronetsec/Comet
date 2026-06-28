@@ -42,7 +42,7 @@ func CometHelper() {
     for _, file := range files {
         data, err := MetadataFS.ReadFile(file)
         if err != nil {
-            continue 
+            continue
         }
 
         var ch Helper

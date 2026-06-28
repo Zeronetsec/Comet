@@ -45,7 +45,7 @@ func fuzz(
         color.DG, color.B, idx, color.DG,
         color.GG, target, color.DG, color.YY, directory,
         color.DG, col, status, color.DG, color.N,
-	)
+    )
 
     if status == 200 || status == 301 || status == 302 {
         mu.Lock()
