@@ -42,4 +42,4 @@ function install::installer() {
                 ${bin}/comet
         " \
         "Symlink: ${GG}${opt}/comet/comet ${DG}-> ${GG}${bin}/comet${N}"
-}
+}; readonly -f install::installer
