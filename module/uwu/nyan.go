@@ -25,14 +25,13 @@ func Nyan(duration time.Duration) {
     for {
         select {
             case <-end:
-                fmt.Print("\r\x1b[K")
+                fmt.Print("\x1b[K")
                 return
             default:
                 fmt.Printf(
                     "\r%s\x1b[K",
                     faces[nyaa%len(faces)],
                 )
-
             time.Sleep(delay)
             nyaa++
         }
