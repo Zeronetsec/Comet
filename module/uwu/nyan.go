@@ -36,6 +36,7 @@ func Nyan(duration time.Duration) {
             nyaa++
         }
     }
+    fmt.Println()
 }
 
 // Copyright (c) 2026 Zeronetsec
