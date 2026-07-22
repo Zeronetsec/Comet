@@ -30,12 +30,10 @@ include : '(
 )'
 
 __RMBK__=false
-HOME="${HOME}"
 
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
         "--remove-backup") export __RMBK__=true ;;
-        "--home="*) export HOME="${1#*=}" ;;
     esac
     shift
 done
