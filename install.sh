@@ -33,6 +33,7 @@ include : '(
     .install/prepdir
     .install/zinstall
     .install/zparser
+    .install/chmod
 )'
 
 __BACKUP__=false
@@ -47,6 +48,7 @@ done
 install::inpackages
 install::prepdir
 install::installer
+install::chmod
 install::checker
 
 trap - EXIT
