@@ -31,7 +31,7 @@ function install::installer() {
 
         install::getinstall \
             "command go build -v -o comet" \
-            "Building: ${GG}comet${N}"
+            "Compiling: ${GG}comet${N}"
         cd
     )
 
