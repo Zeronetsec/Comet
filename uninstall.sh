@@ -52,9 +52,11 @@ install::getinstall \
     "command rm -f ${bin}/comet" \
     "Removing: ${GG}${bin}/comet${N}"
 
-install::getinstall \
-    "command rm -rf ${HOME}/.comet_log"
-    "Removing: ${GG}${HOME}/.comet_log${N}"
+if [[ -d "${HOME}/.comet_log" ]]; then
+    install::getinstall \
+        "command rm -rf ${HOME}/.comet_log"
+        "Removing: ${GG}${HOME}/.comet_log${N}"
+fi
 
 echo -e "${GG}[+] ${N}Comet removed"
 
