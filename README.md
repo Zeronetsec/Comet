@@ -3,7 +3,9 @@
 <div align="center">
     <img src="https://img.shields.io/badge/Comet-Version%200.1-blue?style=square&logo=go&v=1" />
     <img src="https://img.shields.io/badge/Supported%20OS-Linux-blue?style=square&logo=linux&v=1" />
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=square&logo=github&v=1" />
+    <a href="LICENSE">
+        <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=square&logo=github&v=1" />
+    </a>
 </div>
 
 # Comet
@@ -42,8 +44,5 @@ And more commands.
 ## Credits
 This project incorporates components from third-party sources. </br>
 Please refer to [.docs/credits.md](.docs/credits.md) for full details and licensing information.
-
-## License
-This project is licensed under the MIT License.
 
 <!-- Copyright (c) 2026 Zeronetsec -->
