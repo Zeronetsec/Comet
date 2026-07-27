@@ -34,12 +34,17 @@ include : '(
     .install/zinstall
     .install/zparser
     .install/chmod
+    .install/backup
+    .install/postins
+    .install/symlink
 )'
 
+HOME="${HOME}"
 __BACKUP__=false
 
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
+        "--home="*) export HOME="${1#*=}" ;;
         "--backup") export __BACKUP__=true ;;
     esac
     shift
@@ -47,7 +52,10 @@ done
 
 install::inpackages
 install::prepdir
+install::backup
+install::postins
 install::installer
+install::symlink
 install::chmod
 install::checker
 

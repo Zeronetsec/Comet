@@ -29,10 +29,12 @@ include : '(
     .install/getinstall
 )'
 
+HOME="${HOME}"
 __RMBK__=false
 
 while [[ ${#} -gt 0 ]]; do
     case "${1}" in
+        "--home="*) export HOME="${1#*=}" ;;
         "--remove-backup") export __RMBK__=true ;;
     esac
     shift
@@ -40,25 +42,25 @@ done
 
 if [[ "${__RMBK__}" == true ]]; then
     install::getinstall \
-        "command rm -f ${opt}/comet_*.zip.bak" \
+        "command rm -f ${opt}/${targetins}_*.zip.bak" \
         "Removing all backup..."
 fi
 
 install::getinstall \
-    "command rm -rf ${opt}/comet" \
-    "Removing: ${GG}${opt}/comet${N}"
+    "command rm -rf ${opt}/${targetins}" \
+    "Removing: ${GG}${opt}/${targetins}${N}"
 
 install::getinstall \
-    "command rm -f ${bin}/comet" \
-    "Removing: ${GG}${bin}/comet${N}"
+    "command rm -f ${bin}/${targetins}" \
+    "Removing: ${GG}${bin}/${targetins}${N}"
 
-if [[ -d "${HOME}/.comet_log" ]]; then
+if [[ -d "${HOME}/.${targetins}_log" ]]; then
     install::getinstall \
-        "command rm -rf ${HOME}/.comet_log"
-        "Removing: ${GG}${HOME}/.comet_log${N}"
+        "command rm -rf ${HOME}/.${targetins}_log"
+        "Removing: ${GG}${HOME}/.${targetins}_log${N}"
 fi
 
-echo -e "${GG}[+] ${N}Comet removed"
+echo -e "${GG}[+] ${N}${targetins^} removed!"
 
 trap - EXIT
 exit ${?}

@@ -1,6 +1,9 @@
 function install::chmod() {
+    local target
+    local i
+
     target=(
-        "comet"
+        "${targetins}"
     )
 
     for i in "${target[@]}"; do
