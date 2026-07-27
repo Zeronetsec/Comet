@@ -13,7 +13,7 @@ func CometBirthDay() {
     now := time.Now().Format("01-02")
     if now == birthDate {
         fmt.Printf(
-            "%s› %sHappy birthday for %scomet %s🎉\n",
+            "%s› %sHappy birthday for %sComet %s🎉\n",
             color.R, color.N, color.GG, color.N,
         )
         fmt.Println()
