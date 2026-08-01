@@ -86,8 +86,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 - [Assetnote Wordlists](https://wordlists.assetnote.io/): High quality wordlists for content and subdomain discovery which are automatically updated every month.
 - [fuzz.txt](https://github.com/Bo0oM/fuzz.txt): Wordlists of "potentially dangerous" files.
-- [FuzzDB](https://github.com/fuzzdb-project/fuzzdb): Dictionary of attack patterns and primitives for black-box application fault injection and resource discovery. 
-- [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings): A list of useful payloads and bypass for Web Application Security and Pentest/CTF 
+- [FuzzDB](https://github.com/fuzzdb-project/fuzzdb): Dictionary of attack patterns and primitives for black-box application fault injection and resource discovery.
+- [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings): A list of useful payloads and bypass for Web Application Security and Pentest/CTF
 - [BiblePass](https://github.com/MusicGivesMeLife/BiblePass): Wordlists compiled from Bible verses
 - [SamLists](https://github.com/the-xentropy/samlists): Data-driven wordlists containing HTTP parameter names, directory names and filenames.
 
