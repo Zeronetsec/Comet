@@ -144,7 +144,7 @@ func Find(domain string, timeout int, retries int) {
 
     fmt.Println()
     fmt.Printf(
-        "%s[*] %sTotal Subdomains Found: %s%d%s\n",
+        "%s[*] %sTotal found: %s%d%s\n",
         color.B, color.N, color.GG, len(sortedSubs), color.N,
     )
 }
