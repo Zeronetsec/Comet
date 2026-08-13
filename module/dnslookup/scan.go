@@ -5,6 +5,7 @@ package dnslookup
 import (
     "bufio"
     "fmt"
+    "net"
     "strings"
     "time"
     "net/http"
@@ -12,7 +13,7 @@ import (
     "github.com/Zeronetsec/Comet/utils/logger"
 )
 
-func Scan(domain string) {
+func Scan(domain string, timeout int, retries int) {
     fmt.Printf(
         "%s[*] %sTarget: %s%s%s\n",
         color.B, color.N, color.GG, domain, color.N,
@@ -22,6 +23,7 @@ func Scan(domain string) {
         "%s[*] %sAPI: %sapi.hackertarget.com%s\n",
         color.B, color.N, color.GG, color.N,
     )
+
     fmt.Println()
 
     url := fmt.Sprintf(
@@ -30,13 +32,49 @@ func Scan(domain string) {
     )
 
     client := &http.Client{
-        Timeout: 30 * time.Second,
+        Timeout: time.Duration(timeout) * time.Second,
+        Transport: &http.Transport{
+            DialContext: (&net.Dialer{
+                Timeout: 15 * time.Second,
+                KeepAlive: 30 * time.Second,
+            }).DialContext,
+            TLSHandshakeTimeout: 10 * time.Second,
+            ResponseHeaderTimeout: 15 * time.Second,
+        },
     }
 
-    resp, err := client.Get(url)
-    if err != nil {
+    var resp *http.Response
+    var err error
+
+    for i := 0; i < retries; i++ {
+        req, _ := http.NewRequest("GET", url, nil)
+        req.Header.Set(
+            "User-Agent",
+            "https://github.com/Zeronetsec/Comet",
+        )
+
+        resp, err = client.Do(req)
+        if err == nil && resp.StatusCode == 200 {
+            break
+        }
+
+        if resp != nil {
+            resp.Body.Close()
+        }
+
         fmt.Printf(
-            "%s[!] %sConnection error: %s%v%s\n",
+            "%s[!] %sConnection unstable, retrying api %s(%s%d%s/%s%d%s)%s\n",
+            color.R, color.N,
+            color.DG, color.GG, i+1, color.DG,
+            color.CC, retries, color.DG, color.N,
+        )
+
+        time.Sleep(time.Duration(i+2) * time.Second)
+    }
+
+    if err != nil || resp == nil {
+        fmt.Printf(
+            "%s[!] %sFailed to connect to api: %s%v%s\n",
             color.R, color.N, color.GG, err, color.N,
         )
         return
@@ -102,7 +140,7 @@ func Scan(domain string) {
 
     if !hasOutput {
         fmt.Printf(
-            "%s[!] %sNo DNS records found or target invalid!\n",
+            "%s[!] %sNo dns records found or target invalid!\n",
             color.R, color.N,
         )
     }

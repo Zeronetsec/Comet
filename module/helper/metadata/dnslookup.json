@@ -1,5 +1,5 @@
 {
     "Command": "--dnslookup",
-    "Args": "<host>",
+    "Args": "<host> [--timeout <value>] [--retry <value>]",
     "Description": "perform dns lookup to retrieve domain records and ip mapping"
 }

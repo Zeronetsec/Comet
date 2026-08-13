@@ -4,21 +4,17 @@ package subdomain
 
 import (
     "fmt"
+    "net"
     "sort"
     "strings"
     "time"
-    "net"
     "encoding/json"
     "net/http"
     "github.com/Zeronetsec/Comet/utils/color"
     "github.com/Zeronetsec/Comet/utils/logger"
 )
 
-type CrtResult struct {
-    NameValue string `json:"name_value"`
-}
-
-func Find(domain string) {
+func Find(domain string, timeout int, retries int) {
     fmt.Printf(
         "%s[*] %sTarget: %s%s%s\n",
         color.B, color.N, color.GG, domain, color.N,
@@ -28,6 +24,7 @@ func Find(domain string) {
         "%s[*] %sAPI: %scrt.sh%s\n",
         color.B, color.N, color.GG, color.N,
     )
+
     fmt.Println()
 
     url := fmt.Sprintf(
@@ -36,7 +33,7 @@ func Find(domain string) {
     )
 
     client := &http.Client{
-        Timeout: 60 * time.Second,
+        Timeout: time.Duration(timeout) * time.Second,
         Transport: &http.Transport{
             MaxIdleConns: 100,
             MaxIdleConnsPerHost: 100,
@@ -49,8 +46,36 @@ func Find(domain string) {
         },
     }
 
-    resp, err := client.Get(url)
-    if err != nil {
+    var resp *http.Response
+    var err error
+
+    for i := 0; i < retries; i++ {
+        req, _ := http.NewRequest("GET", url, nil)
+        req.Header.Set(
+            "User-Agent",
+            "https://github.com/Zeronetsec/Comet",
+        )
+
+        resp, err = client.Do(req)
+        if err == nil && resp.StatusCode == 200 {
+            break
+        }
+
+        if resp != nil {
+            resp.Body.Close()
+        }
+
+        fmt.Printf(
+            "%s[!] %sConnection unstable, retrying api %s(%s%d%s/%s%d%s)%s\n",
+            color.R, color.N,
+            color.DG, color.GG, i+1, color.DG,
+            color.CC, retries, color.DG, color.N,
+        )
+
+        time.Sleep(time.Duration(i+2) * time.Second)
+    }
+
+    if err != nil || resp == nil {
         fmt.Printf(
             "%s[!] %sError connecting to server: %s%v%s\n",
             color.R, color.N, color.GG, err, color.N,
@@ -71,7 +96,7 @@ func Find(domain string) {
     err = json.NewDecoder(resp.Body).Decode(&results)
     if err != nil {
         fmt.Printf(
-            "%s[!] %sFailed to parse JSON response: %s%v%s\n",
+            "%s[!] %sFailed to parse json response: %s%v%s\n",
             color.R, color.N, color.GG, err, color.N,
         )
         return
@@ -110,7 +135,10 @@ func Find(domain string) {
             color.DG, color.GG, sub, color.N,
         )
 
-        logMess := fmt.Sprintf("Found: %s", sub)
+        logMess := fmt.Sprintf(
+            "Found: %s",
+            sub,
+        )
         log.Log(":", logMess)
     }
 

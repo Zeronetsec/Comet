@@ -5,11 +5,11 @@ package paramscan
 import (
     "bufio"
     "fmt"
+    "net"
     "sort"
     "strings"
     "sync"
     "time"
-    "net"
     "net/http"
     "net/url"
     "github.com/Zeronetsec/Comet/utils/color"
@@ -18,7 +18,7 @@ import (
 
 func FetchParameters(
     target string,
-    threads, timeout int,
+    threads, timeout, retries int,
     isFuzzing bool,
 ) {
     u, _ := url.Parse(target)
@@ -41,6 +41,7 @@ func FetchParameters(
         "%s[*] %sFuzz: %s%t%s\n",
         color.B, color.N, color.GG, isFuzzing, color.N,
     )
+
     fmt.Println()
 
     apiURL := fmt.Sprintf(
@@ -64,7 +65,7 @@ func FetchParameters(
 
     var resp *http.Response
     var err error
-    maxApiRetries := 5
+    maxApiRetries := retries
 
     for i := 0; i < maxApiRetries; i++ {
         req, _ := http.NewRequest("GET", apiURL, nil)
@@ -168,6 +169,7 @@ func FetchParameters(
         "%s[*] %sThreads: %s%d%s\n",
         color.B, color.N, color.GG, threads, color.N,
     )
+
     fmt.Println()
 
     var wg sync.WaitGroup
@@ -224,18 +226,18 @@ func FetchParameters(
                         if (res.StatusCode == 200 ||
                             res.StatusCode == 301 ||
                             res.StatusCode == 303) {
-                            mu.Lock()
-                            results[res.StatusCode] = append(
-                                results[res.StatusCode],
-                                testURL,
-                            )
+                                mu.Lock()
+                                results[res.StatusCode] = append(
+                                    results[res.StatusCode],
+                                    testURL,
+                                )
 
-                            fmt.Printf(
-                                "%s[+] %sFound: %s%s %s(%s%d%s)%s\n",
-                                color.GG, color.N, color.GG, testURL,
-                                color.DG, color.CC, res.StatusCode, color.DG, color.N,
-                            )
-                            mu.Unlock()
+                                fmt.Printf(
+                                    "%s[+] %sFound: %s%s %s(%s%d%s)%s\n",
+                                    color.GG, color.N, color.GG, testURL,
+                                    color.DG, color.CC, res.StatusCode, color.DG, color.N,
+                                )
+                                mu.Unlock()
                         }
                         res.Body.Close()
                         break
@@ -245,7 +247,6 @@ func FetchParameters(
             }(p, val)
         }
     }
-
     wg.Wait()
     summary(results)
 }
