@@ -1,4 +1,10 @@
 function install::installer() {
+    if [[ ! -d "${HOME}/.${targetins}_log" ]]; then
+        install::getinstall \
+            "command mkdir -p ${HOME}/.${targetins}_log" \
+            "Create directory: ${GG}${HOME}/.${targetins}_log${N}"
+    fi
+
     (
         cd "${opt}/${targetins}"
         install::getinstall \
