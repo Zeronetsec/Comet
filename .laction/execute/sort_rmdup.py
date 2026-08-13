@@ -5,7 +5,7 @@ script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent.parent
 
 target_files = [
-    project_root / "console" / "wordlist" / "common.txt",
+    project_root / "console" / "wordlist" / "dirfuzzer" / "common.txt",
     project_root / "module" / "osint" / "sites" / "osint_sites.txt",
 ]
 
