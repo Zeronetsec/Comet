@@ -4,12 +4,6 @@ package subdomain
 
 import (
     "fmt"
-    "net"
-    "sort"
-    "strings"
-    "time"
-    "encoding/json"
-    "net/http"
     "github.com/Zeronetsec/Comet/utils/color"
     "github.com/Zeronetsec/Comet/utils/logger"
 )
@@ -27,100 +21,16 @@ func Find(domain string, timeout int, retries int) {
 
     fmt.Println()
 
-    url := fmt.Sprintf(
-        "https://crt.sh/?q=%%.%s&output=json",
-        domain,
-    )
-
-    client := &http.Client{
-        Timeout: time.Duration(timeout) * time.Second,
-        Transport: &http.Transport{
-            MaxIdleConns: 100,
-            MaxIdleConnsPerHost: 100,
-            DialContext: (&net.Dialer{
-                Timeout: 15 * time.Second,
-                KeepAlive: 30 * time.Second,
-            }).DialContext,
-            TLSHandshakeTimeout: 10 * time.Second,
-            ResponseHeaderTimeout: 15 * time.Second,
-        },
-    }
-
-    var resp *http.Response
-    var err error
-
-    for i := 0; i < retries; i++ {
-        req, _ := http.NewRequest("GET", url, nil)
-        req.Header.Set(
-            "User-Agent",
-            "https://github.com/Zeronetsec/Comet",
-        )
-
-        resp, err = client.Do(req)
-        if err == nil && resp.StatusCode == 200 {
-            break
-        }
-
-        if resp != nil {
-            resp.Body.Close()
-        }
-
-        fmt.Printf(
-            "%s[!] %sConnection unstable, retrying api %s(%s%d%s/%s%d%s)%s\n",
-            color.R, color.N,
-            color.DG, color.GG, i+1, color.DG,
-            color.CC, retries, color.DG, color.N,
-        )
-
-        time.Sleep(time.Duration(i+2) * time.Second)
-    }
-
-    if err != nil || resp == nil {
-        fmt.Printf(
-            "%s[!] %sError connecting to server: %s%v%s\n",
-            color.R, color.N, color.GG, err, color.N,
-        )
-        return
-    }
-    defer resp.Body.Close()
-
-    if resp.StatusCode != 200 {
-        fmt.Printf(
-            "%s[!] %sServer returned status code: %s%d%s\n",
-            color.R, color.N, color.GG, resp.StatusCode, color.N,
-        )
-        return
-    }
-
-    var results []CrtResult
-    err = json.NewDecoder(resp.Body).Decode(&results)
+    subs, err := Fetch(domain, timeout, retries)
     if err != nil {
         fmt.Printf(
-            "%s[!] %sFailed to parse json response: %s%v%s\n",
+            "%s[!] %sError: %s%v%s\n",
             color.R, color.N, color.GG, err, color.N,
         )
         return
     }
 
-    uniqueSubs := make(map[string]bool)
-    for _, res := range results {
-        subs := strings.Split(res.NameValue, "\n")
-        for _, sub := range subs {
-            sub = strings.TrimSpace(sub)
-            sub = strings.TrimPrefix(sub, "*.")
-            if strings.HasSuffix(sub, domain) {
-                uniqueSubs[sub] = true
-            }
-        }
-    }
-
-    var sortedSubs []string
-    for sub := range uniqueSubs {
-        sortedSubs = append(sortedSubs, sub)
-    }
-    sort.Strings(sortedSubs)
-
-    if len(sortedSubs) == 0 {
+    if len(subs) == 0 {
         fmt.Printf(
             "%s[!] %sNo subdomains found for: %s%s%s\n",
             color.R, color.N, color.GG, domain, color.N,
@@ -129,23 +39,23 @@ func Find(domain string, timeout int, retries int) {
     }
 
     log := logger.NewLogger("subdomain")
-    for _, sub := range sortedSubs {
+    for _, sub := range subs {
         fmt.Printf(
             "%s* %s%s%s\n",
             color.DG, color.GG, sub, color.N,
         )
 
-        logMess := fmt.Sprintf(
-            "Found: %s",
-            sub,
+        log.Log(
+            ":", fmt.Sprintf(
+                "Found: %s", sub,
+            ),
         )
-        log.Log(":", logMess)
     }
 
     fmt.Println()
     fmt.Printf(
-        "%s[*] %sTotal found: %s%d%s\n",
-        color.B, color.N, color.GG, len(sortedSubs), color.N,
+        "%s[*] %sTotal subdomains found: %s%d%s\n",
+        color.B, color.N, color.GG, len(subs), color.N,
     )
 }
 

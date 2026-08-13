@@ -6,7 +6,7 @@ import (
     "embed"
 )
 
-//go:embed wordlist/common.txt
+//go:embed wordlist/*
 var WordlistFS embed.FS
 
 type Command interface {

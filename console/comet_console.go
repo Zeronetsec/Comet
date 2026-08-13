@@ -27,6 +27,9 @@ func CometConsole(input string) {
         "--subdomain": Subdomain{},
         "--hostsearch": HostSearch{},
         "--dnslookup": DNSLookup{},
+        "--sqlscan": Sqlscan{},
+        "--subtakeover": SubTakeover{},
+        "--corsscan": CorsScan{},
     }
 
     if cmd, ok := commands[args[1]]; ok {

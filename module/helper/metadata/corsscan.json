@@ -1,0 +1,5 @@
+{
+    "Command": "--corsscan",
+    "Args": "<url|file> [--origin <fake_origin>] [--header <header>] [--threads <value>] [--timeout <value>]",
+    "Description": "detect cross-origin resource sharing (cors) misconfigurations"
+}

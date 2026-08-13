@@ -3,31 +3,37 @@
 package console
 
 import (
-    "fmt"
     "os"
     "strconv"
-    "github.com/Zeronetsec/Comet/utils/color"
+    "github.com/Zeronetsec/Comet/module/corsscan"
     "github.com/Zeronetsec/Comet/utils/invinput"
-    "github.com/Zeronetsec/Comet/module/dirfuzzer"
 )
 
-type Dirfuzzer struct{}
-func (c Dirfuzzer) Execute(args []string) {
+type CorsScan struct{}
+func (c CorsScan) Execute(args []string) {
     if len(args) < 3 {
         invinput.MissingArgument()
         os.Exit(1)
     }
 
-    target := args[2]
-    wordlist := "wordlist/dirfuzzer/common.txt"
-    timeout := 10
+    target := ""
+    origin := "https://evil.com"
+    customHeader := ""
     threads := 100
-    recursive := false
+    timeout := 10
 
-    for i := 3; i < len(args); i++ {
+    for i := 2; i < len(args); i++ {
         switch args[i] {
-            case "--recursive":
-                recursive = true
+            case "--origin":
+                if i+1 < len(args) {
+                    origin = args[i+1]
+                    i++
+                }
+            case "--header":
+                if i+1 < len(args) {
+                    customHeader = args[i+1]
+                    i++
+                }
             case "--threads":
                 if i+1 < len(args) {
                     t, err := strconv.Atoi(args[i+1])
@@ -44,37 +50,25 @@ func (c Dirfuzzer) Execute(args []string) {
                     }
                     i++
                 }
-            case "--wordlist":
-                if i+1 < len(args) {
-                    wordlist = args[i+1]
-                    i++
+            default:
+                if (target == "" &&
+                    args[i][0] != '-') {
+                        target = args[i]
                 }
         }
     }
 
-    if threads <= 0 {
-        fmt.Printf(
-            "%s[!] %sInvalid threads value!\n",
-            color.R, color.N,
-        )
+    if target == "" {
+        invinput.MissingArgument()
         os.Exit(1)
     }
 
-    if timeout <= 0 {
-        fmt.Printf(
-            "%s[!] %sInvalid timeout value!\n",
-            color.R, color.N,
-        )
-        os.Exit(1)
-    }
-
-    dirfuzzer.ExecFuzzing(
+    corsscan.Scan(
         target,
-        WordlistFS,
-        wordlist,
-        timeout,
-        recursive,
+        origin,
+        customHeader,
         threads,
+        timeout,
     )
 }
 
