@@ -56,7 +56,7 @@ install::getinstall \
 
 if [[ -d "${HOME}/.${targetins}_log" ]]; then
     install::getinstall \
-        "command rm -rf ${HOME}/.${targetins}_log"
+        "command rm -rf ${HOME}/.${targetins}_log" \
         "Removing: ${GG}${HOME}/.${targetins}_log${N}"
 fi
 
