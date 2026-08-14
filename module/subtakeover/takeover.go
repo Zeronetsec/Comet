@@ -135,7 +135,7 @@ func Takeover(
             mu.Lock()
             fmt.Printf(
                 "%s[*] %sScanning: %s%s %s-> %s%d%s\n",
-                color.B, color.N, color.DG, target, color.DG,
+                color.B, color.N, color.GG, target, color.DG,
                 color.CC, resp.StatusCode, color.N,
             )
             mu.Unlock()

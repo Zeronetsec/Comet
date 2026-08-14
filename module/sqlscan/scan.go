@@ -97,9 +97,29 @@ func Scan(
                     <-sem
                 }()
 
-                req, _ := http.NewRequest(
+                mu.Lock()
+                fmt.Printf(
+                    "%s[*] %sPayload: %s%s %s-> %s%s%s\n",
+                    color.B, color.N, color.GG, p, color.DG,
+                    color.CC, testURL, color.N,
+                )
+                mu.Unlock()
+
+                req, err := http.NewRequest(
                     "GET", testURL, nil,
                 )
+
+                if err != nil {
+                    mu.Lock()
+                    fmt.Printf(
+                        "%s[!] %sPayload: %s%s %s-> %s%s %s(%serror%s/%stimeout%s)%s\n",
+                        color.R, color.N, color.GG, p, color.DG,
+                        color.CC, testURL, color.DG,
+                        color.R, color.DG, color.R, color.DG, color.N,
+                    )
+                    mu.Unlock()
+                    return
+                }
 
                 req.Header.Set(
                     "User-Agent",
@@ -107,21 +127,24 @@ func Scan(
                 )
 
                 resp, err := client.Do(req)
-                if err != nil {
+                if err != nil || resp == nil {
                     return
                 }
                 defer resp.Body.Close()
 
                 mu.Lock()
                 fmt.Printf(
-                    "%s[*] %sPayload: %s%s %s-> %s%s %s(%s%d%s)%s\n",
-                    color.B, color.N, color.YY, p, color.DG,
+                    "%s[+] %sPayload: %s%s %s-> %s%s %s(%s%d%s)%s\n",
+                    color.GG, color.N, color.YY, p, color.DG,
                     color.GG, testURL, color.DG,
                     color.CC, resp.StatusCode, color.DG, color.N,
                 )
                 mu.Unlock()
 
-                bodyBytes, _ := io.ReadAll(resp.Body)
+                bodyBytes, err := io.ReadAll(resp.Body)
+                if err != nil {
+                    return
+                }
                 bodyStr := string(bodyBytes)
 
                 isVuln, sig := checkVulnerable(bodyStr)
