@@ -12,7 +12,7 @@ function install::installer() {
             "Retidy: ${GG}${targetins}${N}"
 
         install::getinstall \
-            "command go build -v -o ${targetins}" \
+            "command go build -o ${targetins}" \
             "Compiling: ${GG}${targetins}${N}"
         cd
     )
